@@ -18,7 +18,13 @@ export default function App() {
         style={styles.image}
         resizeMode="cover"
       ></ImageBackground>
-      <View style={{ alignItems: "center", justifyContent: "flex-end" }}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "flex-end",
+          border: "none",
+        }}
+      >
         <Button
           title="Get Started"
           accessibilityLabel="get started"
@@ -35,7 +41,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // will apply flex grow to the component to occupy entire main axis of the flexbox container.
-    backgroundColor: "black",
+    backgroundColor: "brown",
   },
   image: {
     flex: 1,
@@ -50,7 +56,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 15,
     backgroundColor: "green",
-    opacity: 0.7,
   },
   btnContainer: {
     width: 220,
@@ -61,8 +66,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     backgroundColor: "green",
-    opacity: 0.7,
     paddingVertical: 20,
-    marginTop: 20,
+    marginTop: 30,
   },
 });

@@ -42,7 +42,7 @@ const LoginTab = (props) => {
     <KeyboardAvoidingWrapper>
       <View style={styles.form}>
         <Input
-          placeholder="  Email Address"
+          label="Email address"
           leftIcon={{
             type: "font-awesome",
             name: "envelope",
@@ -53,7 +53,7 @@ const LoginTab = (props) => {
           containerStyle={styles.formInput}
         />
         <Input
-          placeholder="   Password"
+          label="Password"
           leftIcon={{ type: "font-awesome", name: "key", color: "#3895D3" }}
           onChangeText={(pw) => setPassword(pw)}
           value={password}
@@ -100,21 +100,21 @@ const SignUpTab = (props) => {
     <KeyboardAvoidingWrapper>
       <View style={styles.form}>
         <Input
-          placeholder="   First Name"
+          label="First name"
           leftIcon={{ type: "font-awesome", name: "user", color: "#3895D3" }}
           onChangeText={(firstname) => setFirstname(firstname)}
           value={firstname}
           containerStyle={styles.formInput}
         />
         <Input
-          placeholder="   Last Name"
+          label="Last name"
           leftIcon={{ type: "font-awesome", name: "user", color: "#3895D3" }}
           onChangeText={(lastname) => setLastname(lastname)}
           value={lastname}
           containerStyle={styles.formInput}
         />
         <Input
-          placeholder="   Email"
+          label="Email address"
           leftIcon={{
             type: "font-awesome",
             name: "envelope",
@@ -125,7 +125,7 @@ const SignUpTab = (props) => {
           containerStyle={styles.formInput}
         />
         <Input
-          placeholder="   Password"
+          label="Password"
           leftIcon={{ type: "font-awesome", name: "key", color: "#3895D3" }}
           onChangeText={(password) => setPassword(password)}
           value={password}
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-
-    marginTop: 50,
+    padding: "5%",
+    marginTop: 30,
   },
   formInput: {
     width: 300,

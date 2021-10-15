@@ -18,21 +18,15 @@ const StartScreen = (props) => {
         style={styles.image}
         resizeMode="cover"
       ></ImageBackground>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "flex-end",
-          border: "none",
-        }}
-      >
-        <Button
-          title="Get Started"
-          accessibilityLabel="get started"
-          buttonStyle={styles.button}
-          containerStyle={styles.btnContainer}
-          onPress={props.onStart}
-        />
-      </View>
+
+      <Button
+        title="Get Started"
+        accessibilityLabel="get started"
+        buttonStyle={styles.button}
+        containerStyle={styles.btnContainer}
+        onPress={props.onStart}
+      />
+
       <StatusBar style="light" />
     </SafeAreaView>
   );
@@ -56,9 +50,10 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 15,
     backgroundColor: "green",
+    width: 220,
   },
   btnContainer: {
-    width: 220,
+    alignItems: "center",
   },
   heading: {
     fontSize: 35,

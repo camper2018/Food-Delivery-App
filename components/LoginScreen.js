@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { Icon, Input, CheckBox, Button } from "react-native-elements";
+import { Input, CheckBox, Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import * as SecureStore from "expo-secure-store";
@@ -43,18 +44,17 @@ const LoginTab = (props) => {
       <View style={styles.form}>
         <Input
           label="Email address"
-          leftIcon={{
-            type: "font-awesome",
-            name: "envelope",
-            color: "#3895D3",
-          }}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          leftIcon={<Icon name="envelope" size={30} color="#3895D3" />}
           onChangeText={(email) => setEmail(email)}
           value={email}
           containerStyle={styles.formInput}
         />
         <Input
           label="Password"
-          leftIcon={{ type: "font-awesome", name: "key", color: "#3895D3" }}
+          leftIcon={<Icon name="key" size={30} color="#3895D3" />}
+          secureTextEntry
           onChangeText={(pw) => setPassword(pw)}
           value={password}
           containerStyle={styles.formInput}
@@ -68,10 +68,9 @@ const LoginTab = (props) => {
         />
         <Button
           onPress={handleLogin}
+          accessibilityLabel="login"
           title="Login"
-          icon={
-            <Icon name="sign-in" type="font-awesome" color="white" size={24} />
-          }
+          icon={<Icon name="sign-in" color="white" size={24} />}
           buttonStyle={styles.formButton}
         />
       </View>
@@ -101,32 +100,28 @@ const SignUpTab = (props) => {
       <View style={styles.form}>
         <Input
           label="First name"
-          leftIcon={{ type: "font-awesome", name: "user", color: "#3895D3" }}
+          leftIcon={<Icon name="user" size={30} color="#3895D3" />}
           onChangeText={(firstname) => setFirstname(firstname)}
           value={firstname}
           containerStyle={styles.formInput}
         />
         <Input
           label="Last name"
-          leftIcon={{ type: "font-awesome", name: "user", color: "#3895D3" }}
+          leftIcon={<Icon name="user" size={30} color="#3895D3" />}
           onChangeText={(lastname) => setLastname(lastname)}
           value={lastname}
           containerStyle={styles.formInput}
         />
         <Input
           label="Email address"
-          leftIcon={{
-            type: "font-awesome",
-            name: "envelope",
-            color: "#3895D3",
-          }}
+          leftIcon={<Icon name="envelope" size={30} color="#3895D3" />}
           onChangeText={(email) => setEmail(email)}
           value={email}
           containerStyle={styles.formInput}
         />
         <Input
           label="Password"
-          leftIcon={{ type: "font-awesome", name: "key", color: "#3895D3" }}
+          leftIcon={<Icon name="key" size={30} color="#3895D3" />}
           onChangeText={(password) => setPassword(password)}
           value={password}
           containerStyle={styles.formInput}
@@ -143,14 +138,7 @@ const SignUpTab = (props) => {
         <Button
           onPress={handleSignup}
           title="Sign-up"
-          icon={
-            <Icon
-              name="user-plus"
-              type="font-awesome"
-              color="white"
-              size={20}
-            />
-          }
+          icon={<Icon name="user-plus" color="white" size={20} />}
           buttonStyle={styles.formButton}
         />
       </View>
@@ -193,7 +181,6 @@ const LoginScreen = (props) => {
     </Card>
   );
 };
-export default LoginScreen;
 const styles = StyleSheet.create({
   form: {
     flex: 1,
@@ -231,3 +218,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+export default LoginScreen;

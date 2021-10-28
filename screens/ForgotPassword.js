@@ -1,86 +1,40 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text, View, StyleSheet } from "react-native";
 import { Input, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import KeyboardAvoidingWrapper from "../components/Views/KeyboardAvoidingWrapper";
 import ErrorMessage from "../components/ErrorMessage";
 import Firebase from "../config/firebase";
-
+const auth = Firebase.auth();
 const ForgotPassword = (props) => {
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [rightIcon, setRightIcon] = useState("eye");
-  const [signupError, setSignupError] = useState("");
-  const handlePasswordVisibility = () => {
-    if (rightIcon === "eye") {
-      setRightIcon("eye-off");
-      setPasswordVisibility(!passwordVisibility);
-    } else if (rightIcon === "eye-off") {
-      setRightIcon("eye");
-      setPasswordVisibility(!passwordVisibility);
-    }
-  };
-  const handleSignup = async () => {
+  const [email, setEmail] = useState("");
+  const [resetError, setResetError] = useState("");
+
+  const handleReset = async () => {
     try {
-      if (email !== "" && password !== "" && password === confirmPassword) {
-        await auth.createUserWithEmailAndPassword(email, password);
-      } else if (password !== confirmPassword) {
-        setSignupError("Passwords doesn't match!");
-      }
+      await auth.sendPasswordResetEmail(email);
+      props.handlePasswordReset();
     } catch (error) {
-      setSignupError(error.message);
+      setResetError(error.message);
     }
   };
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
-      <Text>Reset Password</Text>
-
+    <View style={styles.form}>
+      <Text style={styles.title}>Reset Password</Text>
       <Input
         label="Email address"
         keyboardType="email-address"
         autoCapitalize="none"
         leftIcon={<Icon name="envelope" size={30} color="#3895D3" />}
-        autoFocus={true}
-        // value={email}
-        // onChangeText={(text) => setEmail(text)}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
         containerStyle={styles.formInput}
       />
-      <Input
-        label="Password"
-        secureTextEntry={passwordVisibility}
-        min="8"
-        leftIcon={<Icon name="lock" size={30} color="#3895D3" />}
-        rightIcon={
-          <TouchableOpacity onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons name={rightIcon} size={30} color="grey" />
-          </TouchableOpacity>
-        }
-        // onChangeText={(password) => setPassword(password)}
-        // value={password}
-        containerStyle={styles.formInput}
-      />
-      <Input
-        label="Confirm password"
-        secureTextEntry={passwordVisibility}
-        min="8"
-        leftIcon={<Icon name="lock" size={30} color="#3895D3" />}
-        rightIcon={
-          <TouchableOpacity onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons name={rightIcon} size={30} color="grey" />
-          </TouchableOpacity>
-        }
-        // onChangeText={(password) => setConfirmPassword(password)}
-        // value={confirmPassword}
-        containerStyle={styles.formInput}
-        handlePasswordVisibility={handlePasswordVisibility}
-      />
-      {signupError ? <ErrorMessage error={signupError} visible={true} /> : null}
+
+      {resetError ? <ErrorMessage error={resetError} visible={true} /> : null}
       <Button
-        // onPress={handleSignup}
-        title="Sign-up"
-        icon={<Icon name="user-plus" color="white" size={20} />}
+        onPress={handleReset}
+        title="Send Email"
         buttonStyle={styles.formButton}
-        onPress={props.onReset((state) => !state)}
       />
     </View>
   );
@@ -88,17 +42,15 @@ const ForgotPassword = (props) => {
 const styles = StyleSheet.create({
   form: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: "5%",
-    marginTop: 30,
+    justifyContent: "center",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#fff",
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "magenta",
     alignSelf: "center",
-    paddingBottom: 24,
+    paddingBottom: 100,
   },
   formInput: {
     width: 300,
@@ -106,7 +58,10 @@ const styles = StyleSheet.create({
 
   formButton: {
     backgroundColor: "brown",
-    width: 200,
+    width: "90%",
+    borderRadius: 100,
+    margin: "5%",
+    padding: 10,
   },
 });
 

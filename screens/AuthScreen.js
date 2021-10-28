@@ -16,10 +16,12 @@ const AuthTabScreen = (props) => {
     >
       <Tab.Screen
         name="Login"
-        component={Login}
         options={{
           title: "Login",
         }}
+        children={() => (
+          <Login {...props} handlePasswordReset={props.handlePasswordReset} />
+        )}
       />
       <Tab.Screen
         name="Sign-up"
@@ -34,21 +36,25 @@ const AuthTabScreen = (props) => {
 
 const AuthScreen = (props) => {
   const [passwordReset, setPasswordReset] = useState(false);
-  const handlePasswordReset = () => {
-    setPasswordReset(!passwordReset);
-  };
+  const handlePasswordReset = () => setPasswordReset((state) => !state);
   return (
-    <Card style={styles.card}>
-      <Image
-        source={require("./../assets/chef-head-symbol.jpeg")}
-        style={styles.image}
-      />
+    <NavigationContainer independent={true}>
+      {!passwordReset && (
+        <Card style={styles.card}>
+          <Image
+            source={require("./../assets/chef-head-symbol.jpeg")}
+            style={styles.image}
+          />
+          <AuthTabScreen {...props} handlePasswordReset={handlePasswordReset} />
+        </Card>
+      )}
 
-      <NavigationContainer independent={true}>
-        {!passwordReset && <AuthTabScreen {...props} />}
-        {passwordReset && <ForgotPassword />}
-      </NavigationContainer>
-    </Card>
+      {passwordReset && (
+        <Card style={styles.card}>
+          <ForgotPassword handlePasswordReset={handlePasswordReset} />
+        </Card>
+      )}
+    </NavigationContainer>
   );
 };
 const styles = StyleSheet.create({

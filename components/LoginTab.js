@@ -7,14 +7,15 @@ import ErrorMessage from "./ErrorMessage";
 import Firebase from "../config/firebase";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 const auth = Firebase.auth();
+import { useNavigation } from "@react-navigation/native";
 // Login Component
-const LoginTab = ({ navigation, route }) => {
+const LoginTab = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [rightIcon, setRightIcon] = useState("eye");
   const [loginError, setLoginError] = useState("");
-
+  const navigation = useNavigation();
   const handlePasswordVisibility = () => {
     if (rightIcon === "eye") {
       setRightIcon("eye-off");
@@ -33,7 +34,11 @@ const LoginTab = ({ navigation, route }) => {
       setLoginError(error.message);
     }
   };
-  const handleForgotPassword = () => {};
+  // Will change the state in AuthScreen and render forgotPassword component
+  const handleForgotPassword = () => {
+    props.handlePasswordReset();
+  };
+
   return (
     <KeyboardAvoidingWrapper>
       <View style={styles.form}>

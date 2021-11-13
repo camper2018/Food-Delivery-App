@@ -9,11 +9,12 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { Icon } from "react-native-elements";
-import HomeScreen from "../screens/HomeScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 import AuthScreen from "../screens/AuthScreen";
 import OrdersScreen from "../screens/OrdersScreen";
 import DrawerMenu from "../components/Views/hamburger";
 import Logout from "../components/Logout";
+import { DishesContextProvider } from "../HomeScreenContext";
 const auth = Firebase.auth();
 
 const CustomDrawerComponent = (props) => {
@@ -52,7 +53,7 @@ const MainDrawerScreen = (props) => {
     >
       <MainNavigator.Screen
         name="Home"
-        component={HomeScreen}
+        component={WelcomeScreen}
         options={{
           drawerIcon: (props) => (
             <Icon
@@ -113,9 +114,11 @@ const Main = () => {
   }
 
   return (
-    <NavigationContainer>
-      {user ? <MainDrawerScreen /> : <AuthScreen />}
-    </NavigationContainer>
+    <DishesContextProvider>
+      <NavigationContainer>
+        {user ? <MainDrawerScreen /> : <AuthScreen />}
+      </NavigationContainer>
+    </DishesContextProvider>
   );
 };
 const styles = StyleSheet.create({

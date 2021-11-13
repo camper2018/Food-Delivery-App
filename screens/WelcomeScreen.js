@@ -9,11 +9,14 @@ import DrawerMenu from "../components/Views/hamburger";
 import IconButton from "../components/Views/IconButton";
 import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
+import Meals from "../components/data";
+import WelcomeStackScreen from "./WelcomeStackScreen";
+
 const auth = Firebase.auth();
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen = (props) => {
+const WelcomeScreen = (props) => {
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
     try {
@@ -24,7 +27,6 @@ const HomeScreen = (props) => {
   };
   return (
     <Tab.Navigator
-      // headerMode="none"
       initialRouteName="Welcome"
       screenOptions={{
         headerShown: true,
@@ -34,9 +36,7 @@ const HomeScreen = (props) => {
           let iconName;
 
           if (route.name === "Welcome") {
-            iconName = focused
-              ? "ios-information-circle"
-              : "ios-information-circle-outline";
+            iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Shopping Cart") {
             iconName = focused ? "ios-cart" : "ios-cart-outline";
           } else if (route.name === "Favorites") {
@@ -59,7 +59,15 @@ const HomeScreen = (props) => {
         headerTintColor: "white",
         headerStyle: { backgroundColor: "brown" },
         headerRight: () => (
-          <View style={{ marginRight: 20 }}>
+          <View
+            style={{
+              marginRight: 20,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: 70,
+            }}
+          >
+            <Ionicons name="cart-sharp" size={24} color="white" />
             <IconButton
               name="logout"
               size={24}
@@ -68,32 +76,34 @@ const HomeScreen = (props) => {
             />
           </View>
         ),
+        headerText: route.name,
+        headerLeft: () => <DrawerMenu />,
       })}
     >
       <Tab.Screen
         name="Welcome"
-        component={Home}
-        options={{
-          title: "Welcome",
-          headerLeft: () => <DrawerMenu />,
-        }}
+        component={WelcomeStackScreen}
+        // options={({ route }) => ({
+        //   title: route.name,
+        //   headerLeft: () => <DrawerMenu />,
+        // })}
       />
       <Tab.Screen
         name="Shopping Cart"
         component={ShoppingCart}
-        options={{
-          title: "Shopping Cart",
-        }}
+        // options={{
+        //   title: "Shopping Cart",
+        // }}
       />
       <Tab.Screen
         name="Favorites"
         component={Favorites}
-        options={{
-          title: "Favorites",
-        }}
+        // options={{
+        //   title: "Favorites",
+        // }}
       />
     </Tab.Navigator>
   );
 };
 
-export default HomeScreen;
+export default WelcomeScreen;

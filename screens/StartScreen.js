@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, ImageBackground, SafeAreaView } from "react-native";
 import { Button } from "react-native-elements";
-import Main from "../Navigation/MainNavigation";
+import DrawerNavigation from "../Navigation/DrawerNavigation";
 import { AuthenticatedUserProvider } from "../Navigation/AuthenticatedUserProvider";
 const StartScreen = (props) => {
   const [authScreen, showAuthScreen] = useState(false);
@@ -31,7 +31,7 @@ const StartScreen = (props) => {
   } else {
     return (
       <AuthenticatedUserProvider>
-        <Main />
+        <DrawerNavigation />
       </AuthenticatedUserProvider>
     );
   }

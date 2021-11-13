@@ -10,7 +10,7 @@ const Tab = createMaterialTopTabNavigator();
 const AuthTabScreen = (props) => {
   return (
     <Tab.Navigator
-      headerMode="none"
+      // headerMode="none"
       initialRouteName="Login"
       screenOptions={{ headerShown: false }}
     >

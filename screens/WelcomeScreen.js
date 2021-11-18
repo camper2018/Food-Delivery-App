@@ -28,9 +28,11 @@ const WelcomeScreen = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="Welcome"
-      screenOptions={{
-        headerShown: true,
-      }}
+      screenOptions={
+        {
+          // headerShown: true,
+        }
+      }
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -54,7 +56,7 @@ const WelcomeScreen = (props) => {
           fontWeight: "bold",
         },
 
-        headerShown: true,
+        // headerShown: true,
         headerTitleAlign: "center",
         headerTintColor: "white",
         headerStyle: { backgroundColor: "brown" },

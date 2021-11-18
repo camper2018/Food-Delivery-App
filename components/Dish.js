@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -14,13 +14,20 @@ import Card from "./Views/Card";
 import { useNavigation } from "@react-navigation/native";
 const Dish = (props) => {
   const navigation = useNavigation();
+  const [selectedItem, setSelectedItem] = useState({});
+
+  useEffect(() => {
+    setSelectedItem(props.item);
+  }, [selectedItem]);
 
   return Platform.OS === "ios" ? (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Food Detail", {
-          name: props.item.name,
-          foodItem: props.item,
+          // name: props.item.name,
+          // foodItem: props.item,
+          name: selectedItem.name,
+          foodItem: selectedItem,
         })
       }
     >
@@ -62,8 +69,10 @@ const Dish = (props) => {
     <TouchableNativeFeedback
       onPress={() =>
         navigation.navigate("Food Detail", {
-          name: props.item.name,
-          foodItem: props.item,
+          // name: props.item.name,
+          // foodItem: props.item,
+          name: selectedItem.name,
+          foodItem: selectedItem,
         })
       }
       // background={TouchableNativeFeedback.Ripple("#FFFFFF", true)}

@@ -9,13 +9,18 @@ const Category = ({
   handleVisibility,
   visibility,
   filterDish,
+  setSelectedCategory,
+  setData,
+  data,
 }) => {
   const isVisible = visibility[id];
   console.log(id);
+
   const { dishes, setDishes } = useContext(DishesContext);
+  const filteredData = dishes.filter((dish) => dish.category === category);
   return (
     <View>
-      {/* <Button
+      <Button
         title={category}
         buttonStyle={{
           paddingBottom: 2,
@@ -24,44 +29,36 @@ const Category = ({
         titleStyle={{ color: "tomato" }}
         onPress={() => {
           handleVisibility(id);
-          // filterDish(category);
+          setData(filteredData);
         }}
-      /> */}
-      <TouchableWithoutFeedback
+      />
+      {/* <TouchableWithoutFeedback
         onPress={() => {
           handleVisibility(id);
-          // filterDish(category);
+          // setSelectedCategory(category);
+          setData(filteredData);
         }}
 
-        // style={{
-        //   padding: 5,
-        //   // paddingBottom: 2,
-        //   // backgroundColor: "transparent",
-        //   color: "tomato",
-        // }}
-        // buttonStyle={{
-        //   paddingBottom: 2,
-        //   backgroundColor: "transparent",
-        // }}
+
       >
         <Text style={{ color: "tomato", paddingHorizontal: 10 }}>
           {category}
         </Text>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
       <View
         style={{
-          // marginVertical: 1,
+          marginVertical: 2,
           // marginVertical: 8,
           // border: "none",
           borderBottomColor: "tomato",
           borderBottomWidth: 3,
           marginHorizontal: 10,
-          paddingHorizontal: 5,
-          display: !isVisible ? "none" : "block",
-          marginBottom: 35,
+          paddingHorizontal: 25,
+          display: !isVisible ? "none" : "flex",
+          marginBottom: 25,
         }}
       >
-        <Text></Text>
+        {/* <Text></Text> */}
       </View>
     </View>
   );

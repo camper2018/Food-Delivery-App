@@ -6,12 +6,12 @@ import Dish from "./Dish";
 import DishImage from "./DishImage";
 // import { FilteredItemsContext } from "../Navigation/FilteredItemsProvider";
 
-const Dishes = () => {
-  const { dishes, setDishes } = useContext(DishesContext);
+const Dishes = (props) => {
+  // const { dishes, setDishes } = useContext(DishesContext);
   // const { filteredItems, setFilteredItems } = useContext(FilteredItemsContext);
   return (
     <FlatList
-      data={dishes}
+      data={props.dishes}
       // data={filteredItems}
       horizontal
       renderItem={({ item, index }) => (

@@ -8,6 +8,7 @@ import {
   Animated,
   TouchableOpacity,
   Alert,
+  Text,
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -146,15 +147,29 @@ const Favorites = (props) => {
       </View>
     );
   };
-  return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <FlatList
-        data={favoriteDishes}
-        renderItem={renderMenuItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
-  );
+  if (favoriteDishes.length) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <FlatList
+          data={favoriteDishes}
+          renderItem={renderMenuItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    );
+  } else {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>You have no favorites yet!</Text>
+      </View>
+    );
+  }
 };
 const styles = StyleSheet.create({});
 export default Favorites;

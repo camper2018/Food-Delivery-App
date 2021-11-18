@@ -1,47 +1,56 @@
 import React, { useState, useContext } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
 import SearchComponent from "./SearchComponent";
 import Categories from "./Categories";
 import Dishes from "./Dishes";
-
+import { DishesContext } from "../HomeScreenContext";
+import { StatusBar } from "expo-status-bar";
 // import Menu from "../screens/MenuScreen";
 const auth = Firebase.auth();
 
 const Home = (props) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [selectedCategory, setSelectedCategory] = useState("Foods");
+  const { dishes, setDishes } = useContext(DishesContext);
+  let selectedDishes = dishes.filter((dish) => dish.category === "Foods");
+  const [data, setData] = useState(selectedDishes);
+
   return (
-    <View>
+    <ScrollView>
+      <StatusBar style="dark" backgroundColor="brown" />
       <Text style={styles.user}>{user.email}</Text>
       <View style={styles.container}>
         <Text style={styles.title}>Delicious</Text>
         <Text style={styles.title}>food for you</Text>
-        <SearchComponent />
+        <SearchComponent navigation={props.navigation} route={props.route} />
         {/* <Text style={styles.text}>Your UID is: {user.uid} </Text> */}
       </View>
       <Categories
         selectedCategory={selectedCategory}
-        onPress={setSelectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        setData={setData}
+        data={data}
       />
-      <Dishes />
-    </View>
+      <Dishes dishes={data} />
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 25,
+    // paddingTop: 25,
+    paddingTop: 5,
     paddingHorizontal: 12,
   },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
+  // row: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  //   marginBottom: 24,
+  // },
   title: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     color: "green",
   },

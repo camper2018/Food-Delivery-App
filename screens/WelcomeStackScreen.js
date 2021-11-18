@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // import MenuComponent from "../components/Dishes";
 import FoodDetailComponent from "../components/FoodDetail";
 import HomeComponent from "../components/HomeComponent";
-
+import SearchResultComponent from "../components/SearchResult";
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
@@ -16,12 +16,23 @@ const MainStackNavigator = () => {
         component={HomeComponent}
         options={{
           headerShown: false,
-          headerLeft: () => <DrawerMenu />,
+          // headerLeft: () => <DrawerMenu />,
         }}
       />
       <Stack.Screen
         name="Food Detail"
         component={FoodDetailComponent}
+        // options={({ route }) => ({
+        //   title: route.params.name,
+        //   headerLeft: () => <Button title="Go Back"></Button>,
+        // })}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Search Result"
+        component={SearchResultComponent}
         // options={({ route }) => ({
         //   title: route.params.name,
         //   headerLeft: () => <Button title="Go Back"></Button>,

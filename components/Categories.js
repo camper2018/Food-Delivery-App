@@ -9,7 +9,7 @@ const Categories = (props) => {
   const categories = ["Foods", "Snacks", "Drinks", "Sauces", "Desserts"];
   // const { filteredItems, setFilteredItems } = useContext(FilteredItemsContext);
   const [visibility, setVisibility] = useState({
-    Foods: false,
+    Foods: true,
     Snacks: false,
     Drinks: false,
     Sauces: false,
@@ -51,6 +51,10 @@ const Categories = (props) => {
           index={index}
           handleVisibility={handleVisibility}
           visibility={visibility}
+          // selectedCategory={props.selectedCategory}
+          setSelectedCategory={props.setSelectedCategory}
+          setData={props.setData}
+          data={props.data}
           // filterDish={filterDish}
         />
       )}

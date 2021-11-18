@@ -13,10 +13,18 @@ const DishesContextProvider = ({ children }) => {
   // });
   const [favoriteDishes, setFavoriteDishes] = useState([]);
   const [dishes, setDishes] = useState(DISHES);
+  const [cartItems, setCartItems] = useState([]);
   return (
     <DishesContext.Provider
       // value={{ ...state, setState: (data) => setState({ ...state, ...data }) }}
-      value={{ favoriteDishes, setFavoriteDishes, dishes, setDishes }}
+      value={{
+        favoriteDishes,
+        setFavoriteDishes,
+        dishes,
+        setDishes,
+        cartItems,
+        setCartItems,
+      }}
     >
       {children}
     </DishesContext.Provider>

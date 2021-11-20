@@ -17,15 +17,23 @@ import Card from "../components/Views/Card";
 import * as Aminatable from "react-native-animatable";
 import { Ionicons } from "@expo/vector-icons";
 import PlusMinusButton from "../components/Views/Plus-minusButton";
-// import { Button } from "react-native-elements/dist/buttons/Button";
+
 const ShoppingCart = ({ navigation, route }) => {
   const { favoriteDishes, setFavoriteDishes, cartItems, setCartItems } =
     useContext(DishesContext);
   const [myCart, setCart] = useState([]);
-  console.log("cartItems: ", cartItems);
+  // console.log("cartItems: ", cartItems);
+  const createFavoritesIcon = (item) => {
+    const favoriteFound = favoriteDishes.find((dish) => dish.id === item.id);
+    const iconName = favoriteFound ? "heart" : "heart-outline";
+    return iconName;
+  };
+  const [favoritesIcon, setFavoritesIcon] = useState(
+    createFavoritesIcon("heart-outline")
+  );
+  // const [favoritesIcon, setFavoritesIcon] = useState("heart-outline");
 
   useEffect(() => {
-    // const { cartItems, setCartItems } = useContext(DishesContext);
     setCart(cartItems);
   }, [cartItems]);
 
@@ -69,12 +77,43 @@ const ShoppingCart = ({ navigation, route }) => {
         <>
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: "transparent",
               justifyContent: "center",
               alignItems: "center",
               paddingHorizontal: 10,
+              flexDirection: "row",
             }}
           >
+            <Icon
+              name={createFavoritesIcon(item)}
+              color="red"
+              type="ionicon"
+              reverse
+              onPress={(e) => {
+                // setFavoritesIcon(createFavoritesIcon(item));
+                if (favoritesIcon === "heart-outline") {
+                  let wasFound = favoriteDishes.some(
+                    (dish) => dish.id === item.id
+                  );
+                  if (!wasFound) {
+                    Alert.alert(`${item.name} added to your favorites!`);
+                    setFavoriteDishes([...favoriteDishes, item]);
+                    setFavoritesIcon("heart");
+                  } else {
+                    Alert.alert(`${item.name} is already in your favorites!`);
+                    setFavoritesIcon("heart");
+                    setFavoriteDishes([...favoriteDishes, item]);
+                  }
+                } else {
+                  const updatedFavoriteDishes = favoriteDishes.filter(
+                    (dish) => dish.id !== item.id
+                  );
+                  Alert.alert(`${item.name} removed from your favorites!.`);
+                  setFavoriteDishes(updatedFavoriteDishes);
+                  setFavoritesIcon("heart-outline");
+                }
+              }}
+            />
             <Icon
               name="trash"
               color="red"
@@ -138,10 +177,10 @@ const ShoppingCart = ({ navigation, route }) => {
                 <ListItem.Subtitle style={{ color: "red", marginLeft: 30 }}>
                   <PlusMinusButton
                     item={item}
-                    // cartItems={myCart}
-                    // setCartItems={setCart}
-                    cartItems={cartItems}
-                    setCartItems={setCartItems}
+                    cartItems={myCart}
+                    setCartItems={setCart}
+                    // cartItems={cartItems}
+                    // setCartItems={setCartItems}
                   />
                 </ListItem.Subtitle>
               </View>
@@ -163,8 +202,8 @@ const ShoppingCart = ({ navigation, route }) => {
       </View>
       <Text style={{ alignSelf: "center" }}>
         {" "}
-        {/* 👈 swipe left on an item to delete */}
-        👇 swipe left on an item to delete
+        👈 swipe left on an item to delete
+        {/* 👇 swipe left on an item to delete */}
       </Text>
       <FlatList
         data={cartItems}

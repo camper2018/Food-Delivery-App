@@ -18,7 +18,7 @@ const Dish = (props) => {
 
   useEffect(() => {
     setSelectedItem(props.item);
-  }, [selectedItem]);
+  }, [props.item]);
 
   return Platform.OS === "ios" ? (
     <TouchableOpacity

@@ -177,8 +177,10 @@ const ShoppingCart = ({ navigation, route }) => {
                 <ListItem.Subtitle style={{ color: "red", marginLeft: 30 }}>
                   <PlusMinusButton
                     item={item}
+                    index={index}
                     cartItems={myCart}
                     setCartItems={setCart}
+
                     // cartItems={cartItems}
                     // setCartItems={setCartItems}
                   />

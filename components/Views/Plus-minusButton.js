@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import { DishesContext } from "../../HomeScreenContext";
 const PlusMinusButton = (props) => {
   const [count, setCount] = useState(props.item.amount);
-  // const { cartItems, setCartItems } = useContext(DishesContext);
+  const { cartItems, setCartItems } = useContext(DishesContext);
   // console.log("cartItems in PlusMinus: ", cartItems);
   // useEffect(() => {
   //   setCount(props.item.amount);
@@ -29,6 +29,14 @@ const PlusMinusButton = (props) => {
   //   props.setCartItems(updatedCartItems);
   const handleIncreaseCount = () => {
     setCount((count) => count + 1);
+    // const updatedItems = props.cartItems;
+    // updatedItems[props.index].amount = count + 1;
+    const updatedItem = { ...props.item, amount: count + 1 };
+    console.log("updatedItems in plus minus btn: ", updatedItem);
+    const filteredCartItems = cartItems.filter(
+      (item) => item.id !== props.item.id
+    );
+    setCartItems([...filteredCartItems, updatedItem]);
   };
   // const itemFound = cartItems.find((item) => item.id === props.item.id);
   // if (itemFound) {
@@ -41,6 +49,12 @@ const PlusMinusButton = (props) => {
   // };
   const handleDecreaseCount = () => {
     setCount((count) => (count > 1 ? count - 1 : 0));
+    const updatedItem = { ...props.item, amount: count > 1 ? count - 1 : 0 };
+    console.log("updatedItems in plus minus btn: ", updatedItem);
+    const filteredCartItems = cartItems.filter(
+      (item) => item.id !== props.item.id
+    );
+    setCartItems([...filteredCartItems, updatedItem]);
   };
   // const handleDecreaseCount = () => {
 

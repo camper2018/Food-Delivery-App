@@ -172,7 +172,7 @@ const ShoppingCart = ({ navigation, route }) => {
                 }}
               >
                 <ListItem.Subtitle style={{ color: "red", fontWeight: "bold" }}>
-                  ${item.price}
+                  {/* ${item.price} */}${(item.amount * item.price).toFixed(2)}
                 </ListItem.Subtitle>
                 <ListItem.Subtitle style={{ color: "red", marginLeft: 30 }}>
                   <PlusMinusButton
@@ -214,10 +214,12 @@ const ShoppingCart = ({ navigation, route }) => {
         keyExtractor={(item, index) => index.toString()}
       />
       <Button
-        title="Go to Shopping Cart"
-        accessibilityLabel="Go to Shopping Cart"
+        title="Checkout"
+        accessibilityLabel="Checkout"
         buttonStyle={styles.button}
-        // onPress={() => {navigation.navigate("Checkout")}}
+        onPress={() => {
+          navigation.navigate("Checkout");
+        }}
       />
     </View>
   );

@@ -3,7 +3,8 @@ import { View, Text, Badge } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../components/HomeComponent";
-import ShoppingCart from "./OrdersScreen";
+// import ShoppingCart from "./OrdersScreen";
+import ShoppingCart from "./ShoppingCartScreen";
 import Favorites from "./FavoritesScreen";
 import DrawerMenu from "../components/Views/hamburger";
 import IconButton from "../components/Views/IconButton";
@@ -46,37 +47,34 @@ const WelcomeScreen = (props) => {
             iconName = focused ? "ios-heart" : "ios-heart-outline";
           }
 
-          // return <Ionicons name={iconName} size={30} color={color} />;
           if (iconName === "ios-cart-outline") {
             return (
               <View>
-                <View
-                  style={{
-                    // borderRadius: 100,
-                    position: "absolute",
-                    // zIndex: 1.2,
-                    marginLeft: 12,
-                    // marginTop: -12,
-                    // height: 20,
-                  }}
-                >
-                  <Text
+                {cartItems.length ? (
+                  <View
                     style={{
-                      // marginTop: -6,
-                      zIndex: 1.0,
-                      fontSize: 12,
-                      color: "orange",
-                      paddingHorizontal: 5,
-                      // paddingVertical: 1,
-                      position: "relative",
-                      fontWeight: "bold",
-                      backgroundColor: "green",
+                      position: "absolute",
+                      zIndex: 1.2,
+                      marginLeft: 16,
                       borderRadius: 100,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "green",
+                      width: 20,
+                      height: 20,
                     }}
                   >
-                    {cartItems.length}
-                  </Text>
-                </View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {cartItems.length}
+                    </Text>
+                  </View>
+                ) : null}
                 <Ionicons name={iconName} size={30} color={color} />
               </View>
             );
@@ -92,8 +90,6 @@ const WelcomeScreen = (props) => {
           fontSize: 12,
           fontWeight: "bold",
         },
-
-        // headerShown: true,
         headerTitleAlign: "center",
         headerTintColor: "white",
         headerStyle: { backgroundColor: "brown" },

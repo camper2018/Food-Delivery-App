@@ -31,12 +31,18 @@ const PlusMinusButton = (props) => {
     setCount((count) => count + 1);
     // const updatedItems = props.cartItems;
     // updatedItems[props.index].amount = count + 1;
-    const updatedItem = { ...props.item, amount: count + 1 };
+    const updatedItem = {
+      ...props.item,
+      amount: count + 1,
+    };
     console.log("updatedItems in plus minus btn: ", updatedItem);
-    const filteredCartItems = cartItems.filter(
-      (item) => item.id !== props.item.id
-    );
-    setCartItems([...filteredCartItems, updatedItem]);
+    // const filteredCartItems = cartItems.filter(
+    //   (item) => item.id !== props.item.id
+    // );
+    // setCartItems([...filteredCartItems, updatedItem]);
+    const updatedItems = [...cartItems];
+    updatedItems[props.index] = updatedItem;
+    setCartItems(updatedItems);
   };
   // const itemFound = cartItems.find((item) => item.id === props.item.id);
   // if (itemFound) {

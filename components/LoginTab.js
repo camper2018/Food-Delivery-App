@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { Input, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import KeyboardAvoidingWrapper from "./Views/KeyboardAvoidingWrapper";
@@ -29,6 +29,15 @@ const LoginTab = (props) => {
     try {
       if (email !== "" && password !== "") {
         await auth.signInWithEmailAndPassword(email, password);
+        setEmail("");
+        setPassword("");
+        if (!auth.currentUser.emailVerified) {
+          await auth.currentUser.sendEmailVerification();
+          Alert.alert(
+            "Email verification sent! Please verify first and then come back again."
+          );
+          await auth.signOut();
+        }
       }
     } catch (error) {
       setLoginError(error.message);
@@ -64,6 +73,9 @@ const LoginTab = (props) => {
             </TouchableOpacity>
           }
           secureTextEntry={passwordVisibility}
+          autoFocus={true}
+          autoCorrect={false}
+          autoCapitalize="none"
           onChangeText={(pw) => setPassword(pw)}
           value={password}
           containerStyle={styles.formInput}

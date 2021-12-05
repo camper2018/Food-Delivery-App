@@ -7,7 +7,7 @@ import Categories from "./Categories";
 import Dishes from "./Dishes";
 import { DishesContext } from "../HomeScreenContext";
 import { StatusBar } from "expo-status-bar";
-// import Menu from "../screens/MenuScreen";
+
 const auth = Firebase.auth();
 
 const Home = (props) => {

@@ -4,16 +4,13 @@ import { DishesContext } from "../HomeScreenContext";
 import Card from "./Views/Card";
 import Dish from "./Dish";
 import DishImage from "./DishImage";
-// import { FilteredItemsContext } from "../Navigation/FilteredItemsProvider";
 
 const Dishes = (props) => {
-  // const { dishes, setDishes } = useContext(DishesContext);
-  // const { filteredItems, setFilteredItems } = useContext(FilteredItemsContext);
   return (
     <FlatList
       data={props.dishes}
-      // data={filteredItems}
       horizontal
+      showsHorizontalScrollIndicator={false}
       renderItem={({ item, index }) => (
         <View>
           <DishImage item={item} />

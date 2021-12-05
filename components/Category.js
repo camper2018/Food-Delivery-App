@@ -48,8 +48,7 @@ const Category = ({
       <View
         style={{
           marginVertical: 2,
-          // marginVertical: 8,
-          // border: "none",
+
           borderBottomColor: "tomato",
           borderBottomWidth: 3,
           marginHorizontal: 10,
@@ -57,9 +56,7 @@ const Category = ({
           display: !isVisible ? "none" : "flex",
           marginBottom: 25,
         }}
-      >
-        {/* <Text></Text> */}
-      </View>
+      ></View>
     </View>
   );
 };

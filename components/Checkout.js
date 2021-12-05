@@ -19,8 +19,8 @@ const Checkout = ({ navigation, route }) => {
   const [paymentMethod, setPaymentMethod] = useState();
   const [deliveryMethod, setDeliveryMethod] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
-  console.log("paymentMethod: ", paymentMethod);
-  console.log("deliveryMethod: ", deliveryMethod);
+  // console.log("paymentMethod: ", paymentMethod);
+  // console.log("deliveryMethod: ", deliveryMethod);
   const [radioBtn, setRadioBtn] = useState({
     card: false,
     bankAccout: false,
@@ -218,7 +218,6 @@ const Checkout = ({ navigation, route }) => {
             title="Proceed to payment"
             accessibilityLabel="Add to cart"
             buttonStyle={styles.button}
-            // onPress={() => addItemInCart(route.params.foodItem)}
           />
         </ScrollView>
       </Animatable.View>

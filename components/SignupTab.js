@@ -29,7 +29,9 @@ const SignupTab = ({ navigation }) => {
   const handleSignup = async () => {
     try {
       if (email !== "" && password !== "" && password === confirmPassword) {
-        await auth.createUserWithEmailAndPassword(email, password);
+        await auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(() => navigation.navigate("Login"));
       } else if (password !== confirmPassword) {
         setSignupError("Passwords doesn't match!");
       }

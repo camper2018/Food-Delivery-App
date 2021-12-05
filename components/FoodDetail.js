@@ -17,58 +17,24 @@ const FoodDetail = ({ route, navigation }) => {
   const [favoritesIcon, setFavoritesIcon] = useState(iconName);
 
   const addItemInCart = (foodItem) => {
-    console.log("route.params^^^^^^: ", route.params.foodItem);
-
-    // if (cartItems.length === 0) {
-    //   setCartItems([{ ...foodItem, amount: 1 }]);
-    // } else {
-    //   const updatedCartItems = cartItems.map((item) => {
-    //     if (item.id === foodItem.id) {
-    //       item.amount++;
-    //       return item;
-    //     }
-    //     return item;
-    //   });
-    //   console.log("!!!!!!updatedCartItems:", updatedCartItems);
-    //   setCartItems(updatedCartItems);
-
-    // const itemFound = cartItems.find(
-    //   (item) => item.id === route.params.foodItem.id
-    // );
-    // if (itemFound) {
-    //   itemFound.amount++;
-    //   const updatedCart = cartItems.map((item) =>
-    //     item.id === itemFound.id ? itemFound : item
-    //   );
-    //   setCartItems([...updatedCart]);
-    // } else {
-    //   setCartItems([...cartItems, { ...route.params.foodItem, amount: 1 }]);
-    // }
-    // }
     const itemFound = cartItems.find(
       (item) => item.id === route.params.foodItem.id
     );
     if (itemFound) {
       console.log("itemFound: ", itemFound);
       itemFound.amount++;
-      const updatedCart = cartItems.map(
-        (item) => (item.id === itemFound.id ? itemFound : item)
-        // ? { ...itemFound, amount: itemFound.amount }
-        // : item
+      const updatedCart = cartItems.map((item) =>
+        item.id === itemFound.id ? itemFound : item
       );
-      console.log("uuuuuuu ", updatedCart);
+
       setCartItems(updatedCart);
     } else {
       setCartItems([...cartItems, { ...route.params.foodItem, amount: 1 }]);
     }
     Alert.alert(`${foodItem.name} has been added to your shopping cart.`);
+    navigation.goBack();
   };
 
-  // setState({
-  //   favoriteDishes: [...favoriteDishes, { name: "Sushi" }],
-  // });/q
-
-  // const [favorites, setFavorites] = useState(favoriteDishes);
   return (
     <ScrollView>
       <Animatable.View animation="zoomInUp">
@@ -105,7 +71,6 @@ const FoodDetail = ({ route, navigation }) => {
                   );
                   setFavoriteDishes(updatedFavoriteDishes);
                 }
-                // setFavorites([...favoriteDishes, route.params.foodItem]);
               }}
             />
           </View>
@@ -130,12 +95,9 @@ const FoodDetail = ({ route, navigation }) => {
               title="Add to cart"
               accessibilityLabel="Add to cart"
               buttonStyle={styles.button}
-              onPress={() => addItemInCart(route.params.foodItem)}
-              // () => setCartItems([...cartItems, route.params.foodItem])
-              // navigation.navigate("Shopping Cart", {
-              //   foodItem: route.params.foodItem,
-              // })
-              // }
+              onPress={() => {
+                addItemInCart(route.params.foodItem);
+              }}
             />
           </View>
         </Card>

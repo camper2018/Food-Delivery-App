@@ -100,6 +100,7 @@ const WelcomeScreen = (props) => {
               // flexDirection: "row",
               justifyContent: "space-between",
               width: 70,
+              marginBottom: 4,
             }}
           >
             {/* <View>

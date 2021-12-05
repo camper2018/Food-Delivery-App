@@ -15,6 +15,7 @@ import OrdersScreen from "../screens/OrdersScreen";
 import DrawerMenu from "../components/Views/hamburger";
 import Logout from "../components/Logout";
 import { DishesContextProvider } from "../HomeScreenContext";
+import ProfileScreen from "../screens/ProfileScreen";
 const auth = Firebase.auth();
 
 const CustomDrawerComponent = (props) => {
@@ -43,10 +44,11 @@ const MainDrawerScreen = (props) => {
     <MainNavigator.Navigator
       screenOptions={({ route }) => ({
         headerLeft: () => <DrawerMenu />,
-        headerShown: route.name === "Home" ? false : true,
+        // headerShown: route.name === "Home" ? false : true,
         headerTitleAlign: "center",
         headerTintColor: "white",
         headerStyle: { backgroundColor: "brown" },
+        headerShown: false,
       })}
       initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerComponent {...props} />}
@@ -63,9 +65,13 @@ const MainDrawerScreen = (props) => {
               color={props.color}
             />
           ),
+          headerLeft: () => <DrawerMenu />,
+          title: "Home",
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "brown" },
         }}
       />
-      <MainNavigator.Screen
+      {/* <MainNavigator.Screen
         name="Your orders"
         component={OrdersScreen}
         options={{
@@ -78,6 +84,29 @@ const MainDrawerScreen = (props) => {
             />
           ),
           headerLeft: () => <DrawerMenu />,
+
+          title: "Your Orders",
+          headerTintColor: "white",
+          headerStyle: { backgroundColor: "brown" },
+        }}
+      /> */}
+      <MainNavigator.Screen
+        name="Your Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: (props) => (
+            <Icon
+              name="user"
+              type="font-awesome"
+              size={24}
+              color={props.color}
+            />
+          ),
+
+          // headerLeft: () => <DrawerMenu />,
+          // title: "Your Profile",
+          // headerTintColor: "white",
+          // headerStyle: { backgroundColor: "brown" },
         }}
       />
     </MainNavigator.Navigator>
@@ -86,6 +115,7 @@ const MainDrawerScreen = (props) => {
 
 const Main = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
+  console.log(user);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // onAuthStateChanged returns an unsubscriber
@@ -116,7 +146,7 @@ const Main = () => {
   return (
     <DishesContextProvider>
       <NavigationContainer>
-        {user ? <MainDrawerScreen /> : <AuthScreen />}
+        {user && user.emailVerified ? <MainDrawerScreen /> : <AuthScreen />}
       </NavigationContainer>
     </DishesContextProvider>
   );

@@ -9,7 +9,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from "react-native";
-// import { TouchableOpacity } from "react-native-gesture-handler";
+
 import Card from "./Views/Card";
 import { useNavigation } from "@react-navigation/native";
 const Dish = (props) => {
@@ -24,8 +24,6 @@ const Dish = (props) => {
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Food Detail", {
-          // name: props.item.name,
-          // foodItem: props.item,
           name: selectedItem.name,
           foodItem: selectedItem,
         })
@@ -69,8 +67,6 @@ const Dish = (props) => {
     <TouchableNativeFeedback
       onPress={() =>
         navigation.navigate("Food Detail", {
-          // name: props.item.name,
-          // foodItem: props.item,
           name: selectedItem.name,
           foodItem: selectedItem,
         })

@@ -10,11 +10,12 @@ import Firebase from "../config/firebase";
 const auth = Firebase.auth();
 
 const SignupTab = ({ navigation }) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [rightIcon, setRightIcon] = useState("eye");
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [rightIcon, setRightIcon] = useState("eye-off");
   const [signupError, setSignupError] = useState("");
 
   const handlePasswordVisibility = () => {
@@ -31,7 +32,17 @@ const SignupTab = ({ navigation }) => {
       if (email !== "" && password !== "" && password === confirmPassword) {
         await auth
           .createUserWithEmailAndPassword(email, password)
-          .then(() => navigation.navigate("Login"));
+          .then(() => {
+            auth.currentUser
+              .updateProfile({
+                displayName: username,
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            navigation.navigate("Login");
+          })
+          .catch((error) => console.error(error));
       } else if (password !== confirmPassword) {
         setSignupError("Passwords doesn't match!");
       }
@@ -44,7 +55,16 @@ const SignupTab = ({ navigation }) => {
     <KeyboardAvoidingWrapper>
       <View style={styles.form}>
         <Text style={styles.title}>Create an account</Text>
-
+        <Input
+          label="Username"
+          keyboardType="text"
+          // autoCapitalize="none"
+          leftIcon={<Icon name="user" size={30} color="#3895D3" />}
+          autoFocus={true}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          containerStyle={styles.formInput}
+        />
         <Input
           label="Email address"
           keyboardType="email-address"

@@ -20,12 +20,11 @@ const Home = (props) => {
   return (
     <ScrollView>
       <StatusBar style="dark" backgroundColor="brown" />
-      <Text style={styles.user}>{user.email}</Text>
+      <Text style={styles.user}>{user.displayName}</Text>
       <View style={styles.container}>
         <Text style={styles.title}>Delicious</Text>
         <Text style={styles.title}>food for you</Text>
         <SearchComponent navigation={props.navigation} route={props.route} />
-        {/* <Text style={styles.text}>Your UID is: {user.uid} </Text> */}
       </View>
       <Categories
         selectedCategory={selectedCategory}

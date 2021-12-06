@@ -12,8 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 const LoginTab = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [rightIcon, setRightIcon] = useState("eye");
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [rightIcon, setRightIcon] = useState("eye-off");
   const [loginError, setLoginError] = useState("");
   const navigation = useNavigation();
   const handlePasswordVisibility = () => {

@@ -43,11 +43,11 @@ const MainDrawerScreen = (props) => {
   return (
     <MainNavigator.Navigator
       screenOptions={({ route }) => ({
-        headerLeft: () => <DrawerMenu />,
+        // headerLeft: () => <DrawerMenu />,
         // headerShown: route.name === "Home" ? false : true,
-        headerTitleAlign: "center",
-        headerTintColor: "white",
-        headerStyle: { backgroundColor: "brown" },
+        // headerTitleAlign: "center",
+        // headerTintColor: "white",
+        // headerStyle: { backgroundColor: "brown" },
         headerShown: false,
       })}
       initialRouteName="Home"
@@ -65,10 +65,10 @@ const MainDrawerScreen = (props) => {
               color={props.color}
             />
           ),
-          headerLeft: () => <DrawerMenu />,
-          title: "Home",
-          headerTintColor: "white",
-          headerStyle: { backgroundColor: "brown" },
+          // headerLeft: () => <DrawerMenu />,
+          // title: "Home",
+          // headerTintColor: "white",
+          // headerStyle: { backgroundColor: "brown" },
         }}
       />
       {/* <MainNavigator.Screen
@@ -91,7 +91,7 @@ const MainDrawerScreen = (props) => {
         }}
       /> */}
       <MainNavigator.Screen
-        name="Your Profile"
+        name="Profile"
         component={ProfileScreen}
         options={{
           drawerIcon: (props) => (

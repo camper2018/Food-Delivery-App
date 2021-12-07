@@ -30,11 +30,9 @@ const WelcomeScreen = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="Welcome"
-      screenOptions={
-        {
-          // headerShown: true,
-        }
-      }
+      // screenOptions={{
+      //   headerShown: false,
+      // }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -96,8 +94,6 @@ const WelcomeScreen = (props) => {
         headerRight: () => (
           <View
             style={{
-              // marginRight: 20,
-              // flexDirection: "row",
               justifyContent: "space-between",
               width: 70,
               marginBottom: 4,
@@ -144,6 +140,7 @@ const WelcomeScreen = (props) => {
         ),
         headerText: route.name,
         headerLeft: () => <DrawerMenu />,
+        headerShown: false,
       })}
     >
       <Tab.Screen

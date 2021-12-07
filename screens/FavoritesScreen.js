@@ -103,24 +103,40 @@ const Favorites = (props) => {
     //   },
     // ];
     return (
-      <View>
-        <Swipeable
-          renderRightActions={(progress, dragX) => {
-            return (
-              <RightActions
-                progress={progress}
-                dragX={dragX}
-                onDelete={() => handleDelete(item)}
-              />
-            );
+      <Aminatable.View animation="fadeInRightBig" duration={2000}>
+        <View
+          style={{
+            marginHorizontal: 20,
+            marginVertical: 10,
+            shadowColor: "black",
+            shadowOffset: { width: 0, height: 2 },
+            shadowRadius: 6,
+            shadowOpacity: 0.26,
+            elevation: 8,
           }}
-          autoClose={true}
         >
-          <Aminatable.View animation="fadeInRightBig" duration={2000}>
+          <Swipeable
+            containerStyle={{
+              borderRadius: 20,
+            }}
+            renderRightActions={(progress, dragX) => {
+              return (
+                <RightActions
+                  progress={progress}
+                  dragX={dragX}
+                  onDelete={() => handleDelete(item)}
+                />
+              );
+            }}
+            autoClose={true}
+          >
+            {/* <Aminatable.View animation="fadeInRightBig" duration={2000}> */}
             <ListItem
               key={index}
-              bottomDivider
-              style={{ justifyContent: "center" }}
+              // bottomDivider
+              style={{
+                justifyContent: "center",
+              }}
               onPress={() => navigate("Food Detail", { foodItem: item })}
             >
               <Avatar
@@ -142,24 +158,36 @@ const Favorites = (props) => {
                 <ListItem.Subtitle>{item.detail}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
-          </Aminatable.View>
-        </Swipeable>
-      </View>
+            {/* </Aminatable.View> */}
+          </Swipeable>
+        </View>
+      </Aminatable.View>
     );
   };
   if (favoriteDishes.length) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 25,
+            fontWeight: "bold",
+            padding: 20,
+            color: "tomato",
+          }}
+        >
+          My Favorites
+        </Text>
         <FlatList
           data={favoriteDishes}
           renderItem={renderMenuItem}
           keyExtractor={(item, index) => index.toString()}
         />
-      </View>
+      </SafeAreaView>
     );
   } else {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
           justifyContent: "center",
@@ -167,7 +195,7 @@ const Favorites = (props) => {
         }}
       >
         <Text style={{ fontSize: 20 }}>You have no favorites yet!</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 };

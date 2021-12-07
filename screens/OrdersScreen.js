@@ -130,6 +130,13 @@ const ShoppingCart = ({ navigation, route }) => {
       // <View>
       // <Card style={{ borderRadius: 30, margin: 15, padding: 0 }}>
       <Swipeable
+        containerStyle={{
+          shadowColor: "black",
+          shadowOffset: { width: 0, height: 2 },
+          shadowRadius: 6,
+          shadowOpacity: 0.26,
+          elevation: 8,
+        }}
         renderRightActions={(progress, dragX) => {
           return (
             <RightActions
@@ -193,7 +200,7 @@ const ShoppingCart = ({ navigation, route }) => {
     );
   };
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <View style={{ marginTop: 10, marginLeft: 10 }}>
         <Ionicons
           name="arrow-back"
@@ -202,7 +209,7 @@ const ShoppingCart = ({ navigation, route }) => {
           onPress={navigation.goBack}
         />
       </View>
-      <Text style={{ alignSelf: "center" }}>
+      <Text style={{ alignSelf: "center", marginVertical: 10 }}>
         {" "}
         👈 swipe left on an item to delete
         {/* 👇 swipe left on an item to delete */}
@@ -221,7 +228,7 @@ const ShoppingCart = ({ navigation, route }) => {
           navigation.navigate("Checkout");
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

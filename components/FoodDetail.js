@@ -1,5 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Text, StyleSheet, View, ScrollView, Alert } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 import { Button } from "react-native-elements";
 import Card from "./Views/Card";
 import DishImage from "./DishImage";
@@ -36,73 +43,79 @@ const FoodDetail = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <Animatable.View animation="zoomInUp">
-        <Card style={styles.card}>
-          <View style={styles.icons}>
-            <Ionicons
-              name="arrow-back"
-              size={30}
-              color="black"
-              onPress={navigation.goBack}
-            />
-            <Ionicons
-              name={favoritesIcon}
-              size={30}
-              color="red"
-              onPress={(e) => {
-                setFavoritesIcon(() =>
-                  favoritesIcon === "heart-outline" ? "heart" : "heart-outline"
-                );
-
-                if (favoritesIcon === "heart-outline") {
-                  let wasFound = favoriteDishes.some(
-                    (dish) => dish.id === route.params.foodItem.id
+    <SafeAreaView>
+      <ScrollView>
+        <Animatable.View animation="zoomInUp">
+          <Card style={styles.card}>
+            <View style={styles.icons}>
+              <Ionicons
+                name="arrow-back"
+                size={30}
+                color="black"
+                onPress={navigation.goBack}
+              />
+              <Ionicons
+                name={favoritesIcon}
+                size={30}
+                color="red"
+                onPress={(e) => {
+                  setFavoritesIcon(() =>
+                    favoritesIcon === "heart-outline"
+                      ? "heart"
+                      : "heart-outline"
                   );
-                  if (!wasFound) {
-                    setFavoriteDishes([
-                      ...favoriteDishes,
-                      route.params.foodItem,
-                    ]);
+
+                  if (favoritesIcon === "heart-outline") {
+                    let wasFound = favoriteDishes.some(
+                      (dish) => dish.id === route.params.foodItem.id
+                    );
+                    if (!wasFound) {
+                      setFavoriteDishes([
+                        ...favoriteDishes,
+                        route.params.foodItem,
+                      ]);
+                    }
+                  } else {
+                    const updatedFavoriteDishes = favoriteDishes.filter(
+                      (dish) => dish.id !== route.params.foodItem.id
+                    );
+                    setFavoriteDishes(updatedFavoriteDishes);
                   }
-                } else {
-                  const updatedFavoriteDishes = favoriteDishes.filter(
-                    (dish) => dish.id !== route.params.foodItem.id
-                  );
-                  setFavoriteDishes(updatedFavoriteDishes);
-                }
-              }}
-            />
-          </View>
+                }}
+              />
+            </View>
 
-          <DishImage item={route.params.foodItem} />
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{route.params.name}</Text>
-            <Text style={styles.price}>${route.params.foodItem.price}</Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.textHeading}>Description</Text>
-            <Text style={styles.text}>{route.params.foodItem.description}</Text>
-            <Text style={styles.textHeading}>Delivery info</Text>
-            <Text style={styles.text}>
-              {route.params.foodItem.deliveryInfo}
-            </Text>
-            <Text style={styles.textHeading}>Return policy</Text>
-            <Text style={styles.text}>
-              {route.params.foodItem.returnPolicy}
-            </Text>
-            <Button
-              title="Add to cart"
-              accessibilityLabel="Add to cart"
-              buttonStyle={styles.button}
-              onPress={() => {
-                addItemInCart(route.params.foodItem);
-              }}
-            />
-          </View>
-        </Card>
-      </Animatable.View>
-    </ScrollView>
+            <DishImage item={route.params.foodItem} />
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{route.params.name}</Text>
+              <Text style={styles.price}>${route.params.foodItem.price}</Text>
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.textHeading}>Description</Text>
+              <Text style={styles.text}>
+                {route.params.foodItem.description}
+              </Text>
+              <Text style={styles.textHeading}>Delivery info</Text>
+              <Text style={styles.text}>
+                {route.params.foodItem.deliveryInfo}
+              </Text>
+              <Text style={styles.textHeading}>Return policy</Text>
+              <Text style={styles.text}>
+                {route.params.foodItem.returnPolicy}
+              </Text>
+              <Button
+                title="Add to cart"
+                accessibilityLabel="Add to cart"
+                buttonStyle={styles.button}
+                onPress={() => {
+                  addItemInCart(route.params.foodItem);
+                }}
+              />
+            </View>
+          </Card>
+        </Animatable.View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

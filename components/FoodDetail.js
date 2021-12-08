@@ -28,7 +28,6 @@ const FoodDetail = ({ route, navigation }) => {
       (item) => item.id === route.params.foodItem.id
     );
     if (itemFound) {
-      console.log("itemFound: ", itemFound);
       itemFound.amount++;
       const updatedCart = cartItems.map((item) =>
         item.id === itemFound.id ? itemFound : item

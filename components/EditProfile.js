@@ -36,8 +36,6 @@ import Firebase from "../config/firebase";
 const auth = Firebase.auth();
 
 const EditProfile = ({ navigation, route }) => {
-  console.log(auth.currentUser);
-
   const [image, setImage] = useState(
     "https://trishuliriversideresort.com/wp-content/uploads/2020/01/no-profile-picture.jpg"
   );
@@ -90,7 +88,7 @@ const EditProfile = ({ navigation, route }) => {
     const users = Firebase.database().ref("users/" + auth.currentUser.uid);
     users.on("value", (snapshot) => {
       const data = snapshot.val();
-      console.log("data: ******* ", data);
+
       setFirstname(data.firstname);
       setLastname(data.lastname);
       setUsername(data.displayName);
@@ -99,7 +97,6 @@ const EditProfile = ({ navigation, route }) => {
       setEmail(data.email);
       setAddress(data.address);
     });
-    console.log("users:", users);
   }, []);
 
   const takePhotoFromCamera = async () => {
@@ -112,9 +109,7 @@ const EditProfile = ({ navigation, route }) => {
           cropping: true,
         });
         return photo;
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 
@@ -172,16 +167,6 @@ const EditProfile = ({ navigation, route }) => {
     </View>
   );
   const handleSubmitProfile = () => {
-    // auth.currentUser
-    //   .updateProfile({
-    //     displayName: firstname + " " + lastname,
-    //     photoURL: image,
-    //   })
-
-    //   .catch(function (error) {
-    //     console.error(error);
-    //   });
-
     writeUserData(
       auth.currentUser.uid,
       firstname,
@@ -329,26 +314,13 @@ const EditProfile = ({ navigation, route }) => {
               onChangeText={setLastname}
             />
           </View>
-          {/* <View style={styles.action}>
-              <FontAwesome name="user" color={colors.text} size={20} />
-              <TextInput
-                placeholder="Last Name"
-                placeholderTextColor="#666666"
-                autoCorrect={false}
-                style={[
-                  styles.textInput,
-                  {
-                    color: colors.text,
-                  },
-                ]}
-              />
-            </View> */}
+
           <View style={styles.action}>
             <FontAwesome name="phone" color={colors.text} size={25} />
             <TextInput
               placeholder="Phone"
               placeholderTextColor="#666666"
-              keyboardType="number-pad"
+              keyboardType="phone-pad"
               autoCorrect={false}
               style={[
                 styles.textInput,
@@ -378,11 +350,6 @@ const EditProfile = ({ navigation, route }) => {
             />
           </View>
           <View style={styles.action}>
-            {/* <MaterialCommunityIcons
-              name="map-marker"
-              color={colors.text}
-              size={20}
-            /> */}
             <FontAwesome5 name="map-marker-alt" color={colors.text} size={20} />
             <TextInput
               placeholder="Street Address"
@@ -399,7 +366,6 @@ const EditProfile = ({ navigation, route }) => {
             />
           </View>
           <View style={styles.action}>
-            {/* <FontAwesome5 name="map-marker-alt" color={colors.text} size={20} /> */}
             <TextInput
               placeholder="City"
               placeholderTextColor="#666666"
@@ -518,9 +484,6 @@ const styles = StyleSheet.create({
   action: {
     flexDirection: "row",
     margin: 15,
-    // borderBottomWidth: 1,
-    // borderBottomColor: "grey",
-    // paddingBottom: 2,
   },
   actionError: {
     flexDirection: "row",
@@ -532,12 +495,11 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     marginTop: Platform.OS === "ios" ? 0 : -12,
-    // paddingLeft: 10,
-    // marginLeft: 10,
+
     marginHorizontal: 10,
     color: "#05375a",
     borderBottomWidth: 1,
-    // marginHorizontal: 2,
+
     borderBottomColor: "grey",
     paddingBottom: 2,
   },

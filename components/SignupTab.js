@@ -57,8 +57,6 @@ const SignupTab = ({ navigation }) => {
         <Text style={styles.title}>Create an account</Text>
         <Input
           label="Username"
-          keyboardType="text"
-          // autoCapitalize="none"
           leftIcon={<Icon name="user" size={30} color="#3895D3" />}
           autoFocus={true}
           value={username}

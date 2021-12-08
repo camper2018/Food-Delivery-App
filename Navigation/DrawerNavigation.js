@@ -91,7 +91,7 @@ const MainDrawerScreen = (props) => {
         }}
       /> */}
       <MainNavigator.Screen
-        name="Profile"
+        name="Your Profile"
         component={ProfileScreen}
         options={{
           drawerIcon: (props) => (
@@ -115,7 +115,7 @@ const MainDrawerScreen = (props) => {
 
 const Main = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
-  console.log(user);
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // onAuthStateChanged returns an unsubscriber

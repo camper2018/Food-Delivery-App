@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
 const ProfileScreen = ({ navigation, route }) => {
   return (
     <Stack.Navigator
-      initialRoute="Profile"
+      // initialRoute="Profile"
       screenOptions={
         {
           // headerShown: route.name === "Home" ? false : true,

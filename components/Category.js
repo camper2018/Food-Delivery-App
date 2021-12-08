@@ -14,7 +14,6 @@ const Category = ({
   data,
 }) => {
   const isVisible = visibility[id];
-  console.log(id);
 
   const { dishes, setDishes } = useContext(DishesContext);
   const filteredData = dishes.filter((dish) => dish.category === category);

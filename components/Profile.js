@@ -34,68 +34,28 @@ const Profile = () => {
   useEffect(() => {
     // Fetch profile name,nickname, email, address, image, phone number here.
     const users = Firebase.database().ref("users/" + auth.currentUser.uid);
-    users.on("value", (snapshot) => {
-      const data = snapshot.val();
-      console.log("data: ******* ", data);
-      setImageUrl(data.profile_picture);
-      setUsername(data.displayName);
-      setFirstname(data.firstname);
-      setLastname(data.lastname);
-      setEmail(data.email);
-      setPhone(data.phone);
-      setAddress(data.address);
-    });
+    if (users) {
+      users.on("value", (snapshot) => {
+        const data = snapshot.val();
+        setImageUrl(data.profile_picture);
+        setUsername(data.displayName);
+        setFirstname(data.firstname);
+        setLastname(data.lastname);
+        setEmail(data.email);
+        setPhone(data.phone);
+        setAddress(data.address);
+      });
+    }
   }, []);
   return (
     <SafeAreaView>
-      {/* <View
-
-        style={{ justifyContent: "center", alignItems: "center" }}
-      > */}
-      {/* <Image source={require("../assets/profile-image.png")} /> */}
-      {/* <View
-        style={{
-          // height: 250,
-          // width: 250,
-          // sborderRadius: 15,
-          marginTop: 35,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ImageBackground
-          source={{ uri: imageUrl }}
-          style={{ height: 200, width: 200 }}
-          imageStyle={{ borderRadius: 100 }}
-        />
-      </View> */}
-
-      {/* <Image style={{ marginTop: 20 }} source={{ uri: imageUrl }}> */}
-      {/* <Text
-          style={{
-            fontSize: 25,
-            padding: 10,
-            color: "green",
-            fontWeight: "bold",
-          }}
-        >{`${firstname} ${lastname}`}</Text> */}
       <View
         style={{
           alignItems: "center",
-          // marginTop: "20%",
+
           justifyContent: "center",
         }}
       >
-        {/* <Text
-          style={{
-            fontSize: 30,
-            fontWeight: "bold",
-            color: "green",
-            marginTop: 40,
-          }}
-        >
-          Information
-        </Text> */}
         <Card
           style={{
             borderRadius: 25,
@@ -103,18 +63,12 @@ const Profile = () => {
             padding: 35,
             margin: 20,
             marginTop: 35,
-
-            // backgroundColor: "#de9ea2",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <View
             style={{
-              // height: 250,
-              // width: 250,
-              // sborderRadius: 15,
-              // marginTop: 35,
               marginBottom: 40,
               justifyContent: "center",
               alignItems: "center",
@@ -172,11 +126,6 @@ const Profile = () => {
           </View>
         </Card>
       </View>
-      {/* <View>
-          <TouchableOpacity title="Edit Profile" onPress={() => {}} />
-
-        </View> */}
-      {/* </View> */}
     </SafeAreaView>
   );
 };

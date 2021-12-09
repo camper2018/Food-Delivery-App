@@ -16,7 +16,7 @@ const DishImage = ({ item }) => {
       }}
     >
       <Image
-        source={item.imageSrc}
+        source={{ uri: item.imageSrc }}
         style={{
           width: 160,
           height: 160,

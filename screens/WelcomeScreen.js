@@ -3,7 +3,6 @@ import { View, Text, Badge } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../components/HomeComponent";
-// import ShoppingCart from "./OrdersScreen";
 import ShoppingCart from "./ShoppingCartScreen";
 import Favorites from "./FavoritesScreen";
 import DrawerMenu from "../components/Views/hamburger";
@@ -30,9 +29,6 @@ const WelcomeScreen = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="Welcome"
-      // screenOptions={{
-      //   headerShown: false,
-      // }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -99,37 +95,6 @@ const WelcomeScreen = (props) => {
               marginBottom: 4,
             }}
           >
-            {/* <View>
-              <Ionicons
-                style={{ position: "relative" }}
-                name="cart-sharp"
-                size={24}
-                color="white"
-              />
-              <View
-                style={{
-                  position: "absolute",
-
-                  marginLeft: 8,
-                }}
-              >
-                <Text
-                  style={{
-                    marginTop: -9,
-                    zIndex: 1.0,
-                    fontSize: 12,
-                    color: "orange",
-                    paddingHorizontal: 5,
-                    position: "relative",
-                    fontWeight: "bold",
-                    backgroundColor: "green",
-                    borderRadius: 100,
-                  }}
-                >
-                  {cartItems.length}
-                </Text>
-              </View>
-            </View> */}
             <IconButton
               name="logout"
               size={24}
@@ -143,28 +108,9 @@ const WelcomeScreen = (props) => {
         headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Welcome"
-        component={WelcomeStackScreen}
-        // options={({ route }) => ({
-        //   title: route.name,
-        //   headerLeft: () => <DrawerMenu />,
-        // })}
-      />
-      <Tab.Screen
-        name="Shopping Cart"
-        component={ShoppingCart}
-        // options={{
-        //   title: "Shopping Cart",
-        // }}
-      />
-      <Tab.Screen
-        name="Favorites"
-        component={Favorites}
-        // options={{
-        //   title: "Favorites",
-        // }}
-      />
+      <Tab.Screen name="Welcome" component={WelcomeStackScreen} />
+      <Tab.Screen name="Shopping Cart" component={ShoppingCart} />
+      <Tab.Screen name="Favorites" component={Favorites} />
     </Tab.Navigator>
   );
 };

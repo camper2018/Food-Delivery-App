@@ -1,7 +1,7 @@
 export default meals = [
   {
     id: "1",
-    name: "Sushi",
+    name: "sushi",
     category: "Foods",
     price: 22.99,
     description: "Finest fish and veggies",
@@ -12,6 +12,7 @@ export default meals = [
     imageSrc: require("../assets/sushi.jpeg"),
     deliveryTime: "Within 45min to 1 hour",
     favorite: false,
+    imageName: "sushi.jpeg",
   },
   {
     id: "2",
@@ -26,6 +27,7 @@ export default meals = [
     imageSrc: require("../assets/barbecue_burger.jpeg"),
     deliveryTime: "Within 45min to 1 hour",
     favorite: false,
+    imageName: "barbecue_burger.jpeg",
   },
   {
     id: "3",
@@ -42,6 +44,7 @@ export default meals = [
     imageSrc: require("../assets/butter_chicken.jpeg"),
     deliveryTime: "Within 45min to 1 hour",
     favorite: false,
+    imageName: "butter_chicken.jpeg",
   },
   {
     id: "4",
@@ -57,6 +60,7 @@ export default meals = [
     imageSrc: require("../assets/Biryani_Home.jpeg"),
     deliveryTime: "Within 45min to 1 hour",
     favorite: false,
+    imageName: "Biryani_Home.jpeg",
   },
   {
     id: "5",
@@ -71,6 +75,7 @@ export default meals = [
     imageSrc: require("../assets/Aperol.jpeg"),
     deliveryTime: "Within 30 min",
     favorite: false,
+    imageName: "Aperol.jpeg",
   },
   {
     id: "6",
@@ -85,6 +90,7 @@ export default meals = [
     imageSrc: require("../assets/fruit_snack.jpeg"),
     deliveryTime: "Within 45min to 1 hour",
     favorite: false,
+    imageName: "fruit_snack.jpeg",
   },
   {
     id: "7",
@@ -100,5 +106,6 @@ export default meals = [
     imageSrc: require("../assets/ketchup.jpg"),
     deliveryTime: "30 min",
     favorite: false,
+    imageName: "ketchup.jpg",
   },
 ];

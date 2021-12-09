@@ -5,8 +5,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Animated,
-  TouchableOpacity,
   Alert,
   Text,
 } from "react-native";
@@ -16,13 +14,12 @@ import { DishesContext } from "../HomeScreenContext";
 import Card from "../components/Views/Card";
 import * as Aminatable from "react-native-animatable";
 import { Ionicons } from "@expo/vector-icons";
-import PlusMinusButton from "../components/Views/Plus-minusButton";
+import PlusMinusButton from "./Views/Plus-minusButton";
 
 const ShoppingCart = ({ navigation, route }) => {
   const { favoriteDishes, setFavoriteDishes, cartItems, setCartItems } =
     useContext(DishesContext);
   const [myCart, setCart] = useState([]);
-  // console.log("cartItems: ", cartItems);
   const createFavoritesIcon = (item) => {
     const favoriteFound = favoriteDishes.find((dish) => dish.id === item.id);
     const iconName = favoriteFound ? "heart" : "heart-outline";
@@ -31,7 +28,6 @@ const ShoppingCart = ({ navigation, route }) => {
   const [favoritesIcon, setFavoritesIcon] = useState(
     createFavoritesIcon("heart-outline")
   );
-  // const [favoritesIcon, setFavoritesIcon] = useState("heart-outline");
 
   useEffect(() => {
     setCart(cartItems);
@@ -90,7 +86,6 @@ const ShoppingCart = ({ navigation, route }) => {
               type="ionicon"
               reverse
               onPress={(e) => {
-                // setFavoritesIcon(createFavoritesIcon(item));
                 if (favoritesIcon === "heart-outline") {
                   let wasFound = favoriteDishes.some(
                     (dish) => dish.id === item.id
@@ -127,8 +122,6 @@ const ShoppingCart = ({ navigation, route }) => {
     };
 
     return (
-      // <View>
-      // <Card style={{ borderRadius: 30, margin: 15, padding: 0 }}>
       <Swipeable
         containerStyle={{
           shadowColor: "black",
@@ -152,13 +145,10 @@ const ShoppingCart = ({ navigation, route }) => {
           <ListItem
             containerStyle={{ borderRadius: 28, margin: 15 }}
             key={index}
-            // bottomDivider
-            // style={{ justifyContent: "center" }}
-            // onPress={() => navigate("Food Detail", { foodItem: item })}
           >
             <Avatar
               title={item.name}
-              source={item.imageSrc}
+              source={{ uri: item.imageSrc }}
               rounded={true}
               size={80}
             />
@@ -179,7 +169,7 @@ const ShoppingCart = ({ navigation, route }) => {
                 }}
               >
                 <ListItem.Subtitle style={{ color: "red", fontWeight: "bold" }}>
-                  {/* ${item.price} */}${(item.amount * item.price).toFixed(2)}
+                  ${(item.amount * item.price).toFixed(2)}
                 </ListItem.Subtitle>
                 <ListItem.Subtitle style={{ color: "red", marginLeft: 30 }}>
                   <PlusMinusButton
@@ -187,9 +177,6 @@ const ShoppingCart = ({ navigation, route }) => {
                     index={index}
                     cartItems={myCart}
                     setCartItems={setCart}
-
-                    // cartItems={cartItems}
-                    // setCartItems={setCartItems}
                   />
                 </ListItem.Subtitle>
               </View>
@@ -210,13 +197,10 @@ const ShoppingCart = ({ navigation, route }) => {
         />
       </View>
       <Text style={{ alignSelf: "center", marginVertical: 10 }}>
-        {" "}
-        👈 swipe left on an item to delete
-        {/* 👇 swipe left on an item to delete */}
+        swipe 👈 on an item to delete
       </Text>
       <FlatList
         data={cartItems}
-        // data={myCart}
         renderItem={renderCartItem}
         keyExtractor={(item, index) => index.toString()}
       />

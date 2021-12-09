@@ -11,8 +11,6 @@ import {
 import { Icon } from "react-native-elements";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import AuthScreen from "../screens/AuthScreen";
-import OrdersScreen from "../screens/OrdersScreen";
-import DrawerMenu from "../components/Views/hamburger";
 import Logout from "../components/Logout";
 import { DishesContextProvider } from "../HomeScreenContext";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -43,11 +41,6 @@ const MainDrawerScreen = (props) => {
   return (
     <MainNavigator.Navigator
       screenOptions={({ route }) => ({
-        // headerLeft: () => <DrawerMenu />,
-        // headerShown: route.name === "Home" ? false : true,
-        // headerTitleAlign: "center",
-        // headerTintColor: "white",
-        // headerStyle: { backgroundColor: "brown" },
         headerShown: false,
       })}
       initialRouteName="Home"
@@ -65,33 +58,11 @@ const MainDrawerScreen = (props) => {
               color={props.color}
             />
           ),
-          // headerLeft: () => <DrawerMenu />,
-          // title: "Home",
-          // headerTintColor: "white",
-          // headerStyle: { backgroundColor: "brown" },
         }}
       />
-      {/* <MainNavigator.Screen
-        name="Your orders"
-        component={OrdersScreen}
-        options={{
-          drawerIcon: (props) => (
-            <Icon
-              name="shopping-cart"
-              type="font-awesome"
-              size={24}
-              color={props.color}
-            />
-          ),
-          headerLeft: () => <DrawerMenu />,
 
-          title: "Your Orders",
-          headerTintColor: "white",
-          headerStyle: { backgroundColor: "brown" },
-        }}
-      /> */}
       <MainNavigator.Screen
-        name="Your Profile"
+        name="My Profile"
         component={ProfileScreen}
         options={{
           drawerIcon: (props) => (
@@ -102,11 +73,6 @@ const MainDrawerScreen = (props) => {
               color={props.color}
             />
           ),
-
-          // headerLeft: () => <DrawerMenu />,
-          // title: "Your Profile",
-          // headerTintColor: "white",
-          // headerStyle: { backgroundColor: "brown" },
         }}
       />
     </MainNavigator.Navigator>

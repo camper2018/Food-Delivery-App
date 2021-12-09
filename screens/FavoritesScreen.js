@@ -5,20 +5,16 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Animated,
-  TouchableOpacity,
   Alert,
   Text,
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { DishesContext } from "../HomeScreenContext";
-import Card from "../components/Views/Card";
 import * as Aminatable from "react-native-animatable";
 
 const Favorites = (props) => {
   const { favoriteDishes, setFavoriteDishes } = useContext(DishesContext);
-  console.log("favoriteDishes: ", favoriteDishes);
   const deleteFavorite = (item) => {
     const updatedFavorites = favoriteDishes.filter(
       (dish) => dish.id !== item.id
@@ -47,7 +43,7 @@ const Favorites = (props) => {
   };
   const renderMenuItem = ({ item, index }) => {
     const { navigate } = props.navigation;
-    const RightActions = ({ progress, dragX, onDelete, onAdd }) => {
+    const RightActions = ({ progress, dragX, onDelete }) => {
       const scale = dragX.interpolate({
         inputRange: [-100, 30],
         outputRange: [0.9, 0],
@@ -74,34 +70,7 @@ const Favorites = (props) => {
         </>
       );
     };
-    // const rightButtons = [
-    //   {
-    //     text: "Delete",
-    //     type: "delete",
-    //     onPress: () => {
-    //       Alert.alert(
-    //         "Delete Favorite?",
-    //         "Are you sure you wish to delete the favorite dish " +
-    //           item.name +
-    //           "?",
-    //         [
-    //           {
-    //             text: "Cancel",
-    //             onPress: () => console.log(item.name + " Not Deleted"),
-    //             style: "cancel",
-    //           },
-    //           {
-    //             text: "OK",
-    //             onPress: () => deleteFavorite(item.id),
-    //           },
-    //         ],
-    //         {
-    //           cancelable: false,
-    //         }
-    //       );
-    //     },
-    //   },
-    // ];
+
     return (
       <Aminatable.View animation="fadeInRightBig" duration={2000}>
         <View
@@ -130,10 +99,8 @@ const Favorites = (props) => {
             }}
             autoClose={true}
           >
-            {/* <Aminatable.View animation="fadeInRightBig" duration={2000}> */}
             <ListItem
               key={index}
-              // bottomDivider
               style={{
                 justifyContent: "center",
               }}
@@ -141,7 +108,7 @@ const Favorites = (props) => {
             >
               <Avatar
                 title={item.name}
-                source={item.imageSrc}
+                source={{ uri: item.imageSrc }}
                 rounded={true}
                 size={60}
               />
@@ -158,7 +125,6 @@ const Favorites = (props) => {
                 <ListItem.Subtitle>{item.detail}</ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
-            {/* </Aminatable.View> */}
           </Swipeable>
         </View>
       </Aminatable.View>

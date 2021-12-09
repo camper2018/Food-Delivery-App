@@ -1,5 +1,11 @@
-import React, { useState, useContext } from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
 import SearchComponent from "./SearchComponent";
@@ -14,7 +20,9 @@ const Home = (props) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [selectedCategory, setSelectedCategory] = useState("Foods");
   const { dishes, setDishes } = useContext(DishesContext);
-  let selectedDishes = dishes.filter((dish) => dish.category === "Foods");
+  let selectedDishes = dishes.filter(
+    (dish) => dish.category === selectedCategory
+  );
   const [data, setData] = useState(selectedDishes);
 
   return (
@@ -26,28 +34,27 @@ const Home = (props) => {
         <Text style={styles.title}>food for you</Text>
         <SearchComponent navigation={props.navigation} route={props.route} />
       </View>
-      <Categories
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        setData={setData}
-        data={data}
-      />
-      <Dishes dishes={data} />
+      {dishes.length ? (
+        <>
+          <Categories
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setData={setData}
+            data={data}
+          />
+          <Dishes dishes={data} />
+        </>
+      ) : (
+        <ActivityIndicator />
+      )}
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    // paddingTop: 25,
     paddingTop: 5,
     paddingHorizontal: 12,
   },
-  // row: {
-  //   flexDirection: "row",
-  //   justifyContent: "space-between",
-  //   alignItems: "center",
-  //   marginBottom: 24,
-  // },
   title: {
     fontSize: 28,
     fontWeight: "bold",

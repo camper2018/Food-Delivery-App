@@ -1,12 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  Alert,
-  SafeAreaView,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
 import { Button } from "react-native-elements";
 import Card from "./Views/Card";
 import DishImage from "./DishImage";
@@ -37,7 +30,7 @@ const FoodDetail = ({ route, navigation }) => {
     } else {
       setCartItems([...cartItems, { ...route.params.foodItem, amount: 1 }]);
     }
-    Alert.alert(`${foodItem.name} has been added to your shopping cart.`);
+
     navigation.goBack();
   };
 

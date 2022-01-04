@@ -30,7 +30,7 @@ const SearchResult = ({ route, navigation }) => {
         }}
       >
         <Image
-          source={item.imageSrc}
+          source={{ uri: item.imageSrc }}
           style={{
             width: 120,
             height: 120,
@@ -110,7 +110,7 @@ const SearchResult = ({ route, navigation }) => {
   );
 
   return (
-    <View style={{ alignItems: "center", marginTop: 10 }}>
+    <View style={{ alignItems: "center", marginTop: 50 }}>
       <Ionicons
         name="arrow-back"
         size={35}

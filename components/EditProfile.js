@@ -33,6 +33,7 @@ import { Camera } from "expo-camera";
 import * as firebase from "firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
 import Firebase from "../config/firebase";
+import { formatPhone } from "../utils/formatPhone";
 const auth = Firebase.auth();
 
 const EditProfile = ({ navigation, route }) => {
@@ -51,7 +52,7 @@ const EditProfile = ({ navigation, route }) => {
     state: "",
     zipCode: "",
   });
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const [showCamera, setShowCamera] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -321,6 +322,7 @@ const EditProfile = ({ navigation, route }) => {
               placeholder="Phone"
               placeholderTextColor="#666666"
               keyboardType="phone-pad"
+              maxLength={11}
               autoCorrect={false}
               style={[
                 styles.textInput,
@@ -384,6 +386,7 @@ const EditProfile = ({ navigation, route }) => {
               placeholder="State"
               placeholderTextColor="#666666"
               autoCorrect={false}
+              maxLength={2}
               style={[
                 styles.textInput,
                 {
@@ -398,6 +401,7 @@ const EditProfile = ({ navigation, route }) => {
               placeholderTextColor="#666666"
               keyboardType="number-pad"
               onBlur={Keyboard.dismiss}
+              maxLength={5}
               autoCorrect={false}
               style={[
                 styles.textInput,

@@ -188,13 +188,31 @@ const ShoppingCart = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-      <View style={{ marginTop: 10, marginLeft: 10 }}>
+      {/* <View style={{ marginTop: 10, marginLeft: 10 }}> */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginBottom: 30,
+        }}
+      >
         <Ionicons
           name="arrow-back"
           size={30}
           color="black"
           onPress={navigation.goBack}
+          style={{ marginTop: 20, marginLeft: 20 }}
         />
+        <Text
+          style={{
+            marginTop: 20,
+            fontWeight: "bold",
+            fontSize: 25,
+            marginRight: "45%",
+          }}
+        >
+          Cart
+        </Text>
       </View>
       <Text style={{ alignSelf: "center", marginVertical: 10 }}>
         swipe 👈 on an item to delete

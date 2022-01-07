@@ -17,7 +17,7 @@ import {
 import Firebase from "../config/firebase";
 import ProfilePic from "../assets/profile-image.png";
 import Card from "./Views/Card";
-
+import { formatPhone } from "../utils/formatPhone";
 const auth = Firebase.auth();
 const Profile = () => {
   // const [imageUrl, setImageUrl] = useState(ProfilePic);
@@ -42,7 +42,7 @@ const Profile = () => {
         setFirstname(data.firstname);
         setLastname(data.lastname);
         setEmail(data.email);
-        setPhone(data.phone);
+        setPhone(formatPhone(data.phone));
         setAddress(data.address);
       });
     }

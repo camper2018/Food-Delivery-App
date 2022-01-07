@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Text, StyleSheet, View, ScrollView, FlatList } from "react-native";
 import Category from "./Category";
-import meals from "./data";
 
 const Categories = (props) => {
   const categories = ["Foods", "Snacks", "Drinks", "Sauces", "Desserts"];
@@ -24,9 +23,7 @@ const Categories = (props) => {
       [id]: true,
     });
   };
-  const filterDish = (category) => {
-    const filtered = meals.filter((dish) => dish.category === category);
-  };
+
   return (
     <FlatList
       data={categories}

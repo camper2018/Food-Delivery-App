@@ -6,6 +6,8 @@ import {
   TextInput,
   SafeAreaView,
   StyleSheet,
+  Modal,
+  Keyboard,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,7 +17,17 @@ import * as Animatable from "react-native-animatable";
 import Card from "./Views/Card";
 import RadioButton from "./Views/RadioButton";
 import { DishesContext } from "../HomeScreenContext";
+import Firebase from "../config/firebase";
+import { formatPhone } from "../utils/formatPhone";
+
+import { useTheme } from "react-native-paper";
+
 const Checkout = ({ navigation, route }) => {
+  const auth = Firebase.auth();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [address, setAddress] = useState({});
+  const [phone, setPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState();
   const [deliveryMethod, setDeliveryMethod] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
@@ -28,6 +40,30 @@ const Checkout = ({ navigation, route }) => {
     pickup: false,
   });
   const { cartItems } = useContext(DishesContext);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const { colors } = useTheme();
+  // const [address, setAddress] = useState({
+  //   street: "",
+  //   city: "",
+  //   state: "",
+  //   zipCode: "",
+  // });
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  useEffect(() => {
+    // Fetch profile name,nickname, email, address, image, phone number here.
+    const users = Firebase.database().ref("users/" + auth.currentUser.uid);
+    if (users) {
+      users.on("value", (snapshot) => {
+        const data = snapshot.val();
+        setFirstname(data.firstname);
+        setLastname(data.lastname);
+        setAddress(data.address);
+        setPhone(formatPhone(data.phone));
+      });
+    }
+  }, []);
   const calculateTotalPrice = () => {
     const total = cartItems.reduce(
       (acc, item) => (acc += item.amount * item.price),
@@ -54,8 +90,207 @@ const Checkout = ({ navigation, route }) => {
           <Text
             style={{ fontSize: 30, fontWeight: "bold", alignSelf: "center" }}
           >
-            Payment
+            Checkout
           </Text>
+          <Modal
+            visible={isModalVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={toggleModal}
+          >
+            <Card
+              style={{
+                alignItems: "center",
+                alignSelf: "center",
+                marginTop: 150,
+                width: "80%",
+              }}
+            >
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                Delivery Address
+              </Text>
+
+              <View style={{ paddingVertical: 10 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ paddingVertical: 8, fontWeight: "bold" }}>
+                    Street:
+                  </Text>
+                  <TextInput
+                    placeholder="Street Address"
+                    placeholderTextColor="#666666"
+                    autoCorrect={false}
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colors.text,
+                      },
+                    ]}
+                    value={address.street}
+                    onChangeText={(val) =>
+                      setAddress({ ...address, street: val })
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ paddingVertical: 8, fontWeight: "bold" }}>
+                    City:
+                  </Text>
+                  <TextInput
+                    placeholder="City"
+                    placeholderTextColor="#666666"
+                    autoCorrect={false}
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colors.text,
+                      },
+                    ]}
+                    value={address.city}
+                    onChangeText={(val) =>
+                      setAddress({ ...address, city: val })
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ paddingVertical: 8, fontWeight: "bold" }}>
+                    State:
+                  </Text>
+                  <TextInput
+                    placeholder="State"
+                    placeholderTextColor="#666666"
+                    autoCorrect={false}
+                    maxLength={2}
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colors.text,
+                      },
+                    ]}
+                    value={address.state}
+                    onChangeText={(val) =>
+                      setAddress({ ...address, state: val })
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ paddingVertical: 8, fontWeight: "bold" }}>
+                    Zip:
+                  </Text>
+
+                  <TextInput
+                    placeholder="ZIP Code"
+                    placeholderTextColor="#666666"
+                    keyboardType="number-pad"
+                    onBlur={Keyboard.dismiss}
+                    autoCorrect={false}
+                    maxLength={5}
+                    style={[
+                      styles.textInput,
+                      {
+                        color: colors.text,
+                      },
+                    ]}
+                    value={address.zipCode}
+                    onChangeText={(val) =>
+                      setAddress({ ...address, zipCode: val })
+                    }
+                  />
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: 180,
+                }}
+              >
+                <Button title="Submit" type="clear" onPress={toggleModal} />
+                <Button
+                  title="Cancel"
+                  type="clear"
+                  onPress={() => {
+                    toggleModal();
+                  }}
+                  titleStyle={{ color: "red" }}
+                />
+              </View>
+            </Card>
+          </Modal>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginRight: 5,
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 18,
+                margin: 30,
+              }}
+            >
+              Address details
+            </Text>
+            <Button
+              buttonStyle={{
+                padding: 0,
+              }}
+              type="clear"
+              title="change"
+              titleStyle={{ color: "orange", fontWeight: "bold", margin: 30 }}
+              onPress={toggleModal}
+            />
+          </View>
+          <Card style={{ width: "85%", alignSelf: "center" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+              {firstname} {lastname}
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: "#ADADAD",
+                marginVertical: 12,
+                marginRight: 30,
+              }}
+            ></View>
+
+            <Text style={{ fontSize: 15 }}>{address.street}</Text>
+
+            <Text style={{ fontSize: 15 }}>
+              {address.city} {address.state}, {address.zipCode}
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: "#ADADAD",
+                marginVertical: 12,
+                marginRight: 30,
+              }}
+            ></View>
+            <Text style={{ fontSize: 15 }}>{phone}</Text>
+          </Card>
           <Text
             style={{
               fontWeight: "bold",
@@ -231,6 +466,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 15,
     marginHorizontal: 50,
+  },
+  textInput: {
+    marginHorizontal: 5,
+    color: "#05375a",
+    borderBottomWidth: 1,
+    borderBottomColor: "grey",
+    paddingVertical: 8,
+    width: 150,
   },
 });
 export default Checkout;

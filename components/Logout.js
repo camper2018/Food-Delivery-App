@@ -3,12 +3,16 @@ import { View } from "react-native";
 import { Button } from "react-native-elements";
 import IconButton from "./Views/IconButton";
 import Firebase from "../config/firebase";
+import { DishesContext } from "../HomeScreenContext";
 const auth = Firebase.auth();
 
 const Logout = (props) => {
+  const { setFavoriteDishes, setCartItems } = useContext(DishesContext);
   const handleSignOut = async () => {
     try {
       await auth.signOut();
+      setFavoriteDishes([]);
+      setCartItems([]);
     } catch (error) {
       console.log(error);
     }

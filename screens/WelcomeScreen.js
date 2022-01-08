@@ -17,9 +17,12 @@ const auth = Firebase.auth();
 const Tab = createBottomTabNavigator();
 
 const WelcomeScreen = (props) => {
-  const { cartItems } = useContext(DishesContext);
+  const { cartItems, setCartItems, setFavoriteDishes } =
+    useContext(DishesContext);
   const { user } = useContext(AuthenticatedUserContext);
   const handleSignOut = async () => {
+    setFavoriteDishes([]);
+    setCartItems([]);
     try {
       await auth.signOut();
     } catch (error) {

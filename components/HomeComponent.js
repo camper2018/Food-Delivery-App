@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
 import SearchComponent from "./SearchComponent";
 import Categories from "./Categories";
@@ -14,12 +13,10 @@ import Dishes from "./Dishes";
 import { DishesContext } from "../HomeScreenContext";
 import { StatusBar } from "expo-status-bar";
 
-const auth = Firebase.auth();
-
 const Home = (props) => {
   const { user } = useContext(AuthenticatedUserContext);
   const [selectedCategory, setSelectedCategory] = useState("Foods");
-  const { dishes, setDishes } = useContext(DishesContext);
+  const { dishes } = useContext(DishesContext);
   let selectedDishes = dishes.filter(
     (dish) => dish.category === selectedCategory
   );

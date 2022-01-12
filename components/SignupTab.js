@@ -29,7 +29,12 @@ const SignupTab = ({ navigation }) => {
   };
   const handleSignup = async () => {
     try {
-      if (email !== "" && password !== "" && password === confirmPassword) {
+      if (
+        username !== "" &&
+        email !== "" &&
+        password !== "" &&
+        password === confirmPassword
+      ) {
         await auth
           .createUserWithEmailAndPassword(email, password)
           .then(() => {

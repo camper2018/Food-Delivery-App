@@ -1,48 +1,40 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   View,
-  ScrollView,
   StyleSheet,
-  Image,
-  Button,
-  Input,
-  Alert,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  KeyboardAvoidingView,
   Platform,
   Keyboard,
+  ScrollView,
 } from "react-native";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import { useTheme } from "react-native-paper";
-import { Avatar, Title, Caption, TouchableRipple } from "react-native-paper";
-import KeyboardAvoidingWrapper from "./Views/KeyboardAvoidingWrapper";
 import * as ImagePicker from "expo-image-picker";
 
 import {
   MaterialCommunityIcons,
   FontAwesome,
   FontAwesome5,
-  Feather,
 } from "@expo/vector-icons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import { Camera } from "expo-camera";
-import * as firebase from "firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
 import Firebase from "../config/firebase";
-import { formatPhone } from "../utils/formatPhone";
 const auth = Firebase.auth();
 
 const EditProfile = ({ navigation, route }) => {
   const [image, setImage] = useState(
     "https://trishuliriversideresort.com/wp-content/uploads/2020/01/no-profile-picture.jpg"
   );
-  const [firstname, setFirstname] = useState("John");
-  const [lastname, setLastname] = useState("Doe");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    auth.currentUser ? auth.currentUser.displayName : ""
+  );
+  const [firstname, setFirstname] = useState(username);
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState(
     auth.currentUser ? auth.currentUser.email : ""
   );
@@ -89,28 +81,40 @@ const EditProfile = ({ navigation, route }) => {
     const users = Firebase.database().ref("users/" + auth.currentUser.uid);
     users.on("value", (snapshot) => {
       const data = snapshot.val();
-
-      setFirstname(data.firstname);
-      setLastname(data.lastname);
-      setUsername(data.displayName);
-      setImage(data.profile_picture);
-      setPhoneNumber(data.phone);
-      setEmail(data.email);
-      setAddress(data.address);
+      if (data) {
+        setFirstname(data.firstname);
+        setLastname(data.lastname);
+        setUsername(data.displayName);
+        setImage(data.profile_picture);
+        setPhoneNumber(data.phone);
+        setEmail(data.email);
+        setAddress(data.address);
+      }
     });
   }, []);
 
   const takePhotoFromCamera = async () => {
     if (cameraRef) {
       try {
-        let photo = await cameraRef.current.takePictureAsync({
+        let photo = await ImagePicker.launchCameraAsync({
           allowEditing: true,
           aspect: [4, 3],
           quality: 1,
           cropping: true,
         });
+
         return photo;
-      } catch (e) {}
+        // The following code works on ios but not on android
+        // let photo = await cameraRef.current.takePictureAsync({
+        //   allowEditing: true,
+        //   aspect: [4, 3],
+        //   quality: 1,
+        //   cropping: true,
+        // });
+        // return photo;
+      } catch (e) {
+        console.log("Error: ", e.message);
+      }
     }
   };
 
@@ -123,7 +127,12 @@ const EditProfile = ({ navigation, route }) => {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
     if (pickerResult.cancelled === true) {
       return;
     }
@@ -139,24 +148,66 @@ const EditProfile = ({ navigation, route }) => {
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
       </View>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={() => setShowCamera(true)}
-      >
-        <Text style={styles.panelButtonTitle}>Take Photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={choosePhotoFromLibrary}
-      >
-        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={() => bs.current.snapTo(1)}
-      >
-        <Text style={styles.panelButtonTitle}>Cancel</Text>
-      </TouchableOpacity>
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={() => {
+            console.log("I am clicked");
+            setShowCamera(true);
+          }}
+        >
+          <Text style={styles.panelButtonTitle}>Take Photo</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("tomato", false)}
+          onPress={() => {
+            setShowCamera(true);
+          }}
+        >
+          <View style={styles.panelButton}>
+            <Text style={styles.panelButtonTitle}>Take Photo</Text>
+          </View>
+        </TouchableNativeFeedback>
+      )}
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={choosePhotoFromLibrary}
+        >
+          <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableNativeFeedback
+          background={
+            Platform.Version >= 21
+              ? TouchableNativeFeedback.Ripple("tomato", false)
+              : TouchableNativeFeedback.SelectableBackground()
+          }
+          onPress={choosePhotoFromLibrary}
+        >
+          <View style={styles.panelButton}>
+            <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+          </View>
+        </TouchableNativeFeedback>
+      )}
+      {Platform.OS === "ios" ? (
+        <TouchableOpacity
+          style={styles.panelButton}
+          onPress={() => bs.current.snapTo(1)}
+        >
+          <Text style={styles.panelButtonTitle}>Cancel</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("tomato", false)}
+          onPress={() => bs.current.snapTo(1)}
+        >
+          <View style={styles.panelButton}>
+            <Text style={styles.panelButtonTitle}>Cancel</Text>
+          </View>
+        </TouchableNativeFeedback>
+      )}
     </View>
   );
 
@@ -184,40 +235,97 @@ const EditProfile = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <Camera style={styles.camera} type={type} ref={cameraRef}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>Flip</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={async () => {
-                const result = await takePhotoFromCamera();
-                if (!result.cancelled) {
-                  setImage(result.uri);
-                }
-                setShowCamera(false);
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>Photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                setShowCamera(false);
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+          {Platform.OS === "ios" ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>Flip</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={async () => {
+                  const result = await takePhotoFromCamera();
+                  if (!result.cancelled) {
+                    setImage(result.uri);
+                  }
+                  setShowCamera(false);
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  Photo
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setShowCamera(false);
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <TouchableNativeFeedback
+                // background={TouchableNativeFeedback.Ripple("transparent", false)}
+                // style={styles.button}
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              >
+                <View style={styles.button}>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    Flip
+                  </Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback
+                // background={TouchableNativeFeedback.Ripple("red")}
+                // style={styles.button}
+                onPress={async () => {
+                  const result = await takePhotoFromCamera();
+
+                  if (result && !result.cancelled) {
+                    setImage(result.uri);
+                  }
+                  setShowCamera(false);
+                }}
+              >
+                <View style={styles.button}>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    Photo
+                  </Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback
+                // background={TouchableNativeFeedback.Ripple("red")}
+                // style={styles.button}
+                onPress={() => {
+                  setShowCamera(false);
+                }}
+              >
+                <View style={styles.button}>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    Cancel
+                  </Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+          )}
         </Camera>
       </View>
     );
@@ -239,51 +347,100 @@ const EditProfile = ({ navigation, route }) => {
             opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
           }}
         >
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-              <View
-                style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 15,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <ImageBackground
-                  source={{ uri: image }}
-                  style={{ height: 120, width: 120 }}
-                  imageStyle={{ borderRadius: 100 }}
+          {Platform.OS === "ios" ? (
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+                <View
+                  style={{
+                    // height: 200,
+                    // width: 200,
+                    // borderRadius: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      paddingBottom: 4,
-                    }}
+                  <ImageBackground
+                    source={{ uri: image }}
+                    style={{ height: 120, width: 120 }}
+                    imageStyle={{ borderRadius: 100 }}
                   >
-                    <MaterialCommunityIcons
-                      name="camera"
-                      size={30}
-                      color="#fff"
+                    <View
                       style={{
-                        opacity: 0.7,
+                        flex: 1,
+                        justifyContent: "flex-end",
+                        // justifyContent: "center",
                         alignItems: "center",
-                        justifyContent: "center",
-                        borderWidth: 1,
-                        borderColor: "#fff",
-                        borderRadius: 10,
+                        paddingBottom: 15,
                       }}
-                    />
-                  </View>
-                </ImageBackground>
-              </View>
-            </TouchableOpacity>
-            <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold" }}>
-              {`${firstname} ${lastname}`}
-            </Text>
-          </View>
+                    >
+                      <MaterialCommunityIcons
+                        name="camera"
+                        size={30}
+                        color="#fff"
+                        style={{
+                          opacity: 0.7,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderWidth: 1,
+                          borderColor: "#fff",
+                          borderRadius: 10,
+                        }}
+                      />
+                    </View>
+                  </ImageBackground>
+                </View>
+              </TouchableOpacity>
+              <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold" }}>
+                {`${firstname} ${lastname}`}
+              </Text>
+            </View>
+          ) : (
+            <View style={{ alignItems: "center" }}>
+              <TouchableNativeFeedback onPress={() => bs.current.snapTo(0)}>
+                <View
+                  style={{
+                    // height: 100,
+                    // width: 100,
+                    // borderRadius: 15,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <ImageBackground
+                    source={{ uri: image }}
+                    style={{ height: 120, width: 120 }}
+                    imageStyle={{ borderRadius: 100 }}
+                  >
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        paddingBottom: 15,
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="camera"
+                        size={30}
+                        color="#fff"
+                        style={{
+                          opacity: 0.7,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderWidth: 1,
+                          borderColor: "#fff",
+                          borderRadius: 10,
+                        }}
+                      />
+                    </View>
+                  </ImageBackground>
+                </View>
+              </TouchableNativeFeedback>
+              <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold" }}>
+                {`${firstname} ${lastname}`}
+              </Text>
+            </View>
+          )}
 
           <View style={styles.action}>
             <FontAwesome name="user" color={colors.text} size={20} />
@@ -413,13 +570,41 @@ const EditProfile = ({ navigation, route }) => {
               onChangeText={(val) => setAddress({ ...address, zipCode: val })}
             />
           </View>
-
-          <TouchableOpacity
-            style={styles.commandButton}
-            onPress={handleSubmitProfile}
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-evenly" }}
           >
-            <Text style={styles.panelButtonTitle}>Submit</Text>
-          </TouchableOpacity>
+            {Platform.OS === "ios" ? (
+              <TouchableOpacity
+                style={styles.commandButton}
+                onPress={handleSubmitProfile}
+              >
+                <Text style={styles.panelButtonTitle}>Submit</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableNativeFeedback
+                style={styles.commandButton}
+                onPress={handleSubmitProfile}
+              >
+                <Text style={styles.panelButtonTitle}>Submit</Text>
+              </TouchableNativeFeedback>
+            )}
+
+            {Platform.OS === "ios" ? (
+              <TouchableOpacity
+                style={{ ...styles.commandButton, backgroundColor: "grey" }}
+                onPress={() => navigation.navigate("Profile")}
+              >
+                <Text style={styles.panelButtonTitle}>Cancel</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableNativeFeedback
+                style={{ ...styles.commandButton, backgroundColor: "grey" }}
+                onPress={() => navigation.navigate("Profile")}
+              >
+                <Text style={styles.panelButtonTitle}>Cancel</Text>
+              </TouchableNativeFeedback>
+            )}
+          </View>
         </Animated.View>
       </View>
     );
@@ -432,9 +617,12 @@ const styles = StyleSheet.create({
   },
   commandButton: {
     padding: 15,
-    borderRadius: 10,
+    paddingHorizontal: 35,
+    borderRadius: 15,
     backgroundColor: "#FF6347",
+    // backgroundColor: "green",
     alignItems: "center",
+    // marginHorizontal: 20,
     marginTop: 10,
   },
   panel: {

@@ -1,16 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Icon } from "react-native-elements";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  FlatList,
-  Animated,
-  TouchableOpacity,
-  Alert,
-  Text,
-  Button,
-} from "react-native";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import EditProfile from "../components/EditProfile";
 import Profile from "../components/Profile";
@@ -20,18 +8,9 @@ const Stack = createStackNavigator();
 const ProfileScreen = ({ navigation, route }) => {
   return (
     <Stack.Navigator
-      // initialRoute="Profile"
       screenOptions={
         {
-          // headerShown: route.name === "Home" ? false : true,
-          //   backgroundColor: "#fff",
-          //   shadowColor: "#fff", // works only for ios
-          //   elevation: 0, // works for android
-          // },
-          // headerTintColor: "#000",
-          // headerTitleStyle: {
-          //   fontWeight: "bold",
-          // },
+          // unmountOnBlur: true,
         }
       }
     >
@@ -56,30 +35,13 @@ const ProfileScreen = ({ navigation, route }) => {
               }}
             />
           ),
-          // headerStyle: {
-          // headerShown: false,
-          // headerLeft: () => <DrawerMenu />,
+          // unmountOnBlur: true,
         })}
       />
       <Stack.Screen
         name="Edit Profile"
         component={EditProfile}
-        options={{ title: "", headerTintColor: "tomato" }}
-        // options={{ headerShown: false }}
-        // options={({ route, navigation }) => ({
-        //   title: "Edit Profile",
-        //   headerLeft: () => (
-        //     <Button
-        //       title="Go Back"
-        //       onPress={() => {
-        //         navigation.navigate("Profile");
-        //       }}
-        //     />
-        //   ),
-        // })}
-        // options={{
-        //   headerShown: false,
-        // }}
+        options={{ title: "", headerTintColor: "tomato", unmountOnBlur: true }}
       />
     </Stack.Navigator>
   );

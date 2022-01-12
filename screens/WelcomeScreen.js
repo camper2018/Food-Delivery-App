@@ -1,17 +1,16 @@
 import React, { useContext } from "react";
-import { View, Text, Badge } from "react-native";
+import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Home from "../components/HomeComponent";
 import ShoppingCart from "./ShoppingCartScreen";
 import Favorites from "./FavoritesScreen";
 import DrawerMenu from "../components/Views/hamburger";
 import IconButton from "../components/Views/IconButton";
 import Firebase from "../config/firebase";
 import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
-import Meals from "../components/data";
 import WelcomeStackScreen from "./WelcomeStackScreen";
 import { DishesContext } from "../HomeScreenContext";
+
 const auth = Firebase.auth();
 
 const Tab = createBottomTabNavigator();

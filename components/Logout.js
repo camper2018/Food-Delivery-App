@@ -18,14 +18,12 @@ const Logout = (props) => {
     }
   };
   return (
-    <View style={{ marginTop: "100%", marginBottom: 0, borderRadius: 0 }}>
+    <View style={{ marginTop: "70%", marginRight: 10 }}>
       <Button
         title="Logout"
         buttonStyle={{
           marginLeft: 10,
           fontSize: 10,
-
-          paddingHorizontal: 0,
           backgroundColor: "brown",
         }}
         icon={<IconButton name="logout" size={24} color="white" />}

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Modal,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,25 +32,39 @@ const Checkout = ({ navigation, route }) => {
   const [paymentMethod, setPaymentMethod] = useState();
   const [deliveryMethod, setDeliveryMethod] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
-  // console.log("paymentMethod: ", paymentMethod);
-  // console.log("deliveryMethod: ", deliveryMethod);
+
   const [radioBtn, setRadioBtn] = useState({
     card: false,
     bankAccout: false,
     doorDelivery: false,
     pickup: false,
   });
-  const { cartItems } = useContext(DishesContext);
+  const { cartItems, setCartItems, orders, setOrders } =
+    useContext(DishesContext);
   const [isModalVisible, setModalVisible] = useState(false);
   const { colors } = useTheme();
-  // const [address, setAddress] = useState({
-  //   street: "",
-  //   city: "",
-  //   state: "",
-  //   zipCode: "",
-  // });
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const handleCheckout = () => {
+    const order = {
+      userId: auth.currentUser.uid,
+      username: firstname + " " + lastname,
+      items: cartItems,
+      totalPrice,
+      paymentMethod,
+      deliveryMethod,
+      deliveryAddress: address,
+      paymentStatus: "in process",
+      deliveryStatus: "in process",
+    };
+
+    Firebase.database().ref("orders").push(order);
+    Alert.alert("Action!, An order was was placed");
+
+    setCartItems([]);
+    navigation.navigate("Welcome");
   };
   useEffect(() => {
     // Fetch profile name,nickname, email, address, image, phone number here.
@@ -453,6 +468,7 @@ const Checkout = ({ navigation, route }) => {
             title="Proceed to payment"
             accessibilityLabel="Add to cart"
             buttonStyle={styles.button}
+            onPress={handleCheckout}
           />
         </ScrollView>
       </Animatable.View>

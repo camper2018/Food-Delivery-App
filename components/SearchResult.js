@@ -2,17 +2,14 @@ import React, { useContext, useState } from "react";
 import {
   Text,
   View,
-  ScrollView,
   Image,
   FlatList,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
-  SafeAreaView,
 } from "react-native";
 import Card from "./Views/Card";
-import Dish from "./Dish";
-import DishImage from "./DishImage";
+
 import { Ionicons } from "@expo/vector-icons";
 const SearchResult = ({ route, navigation }) => {
   console.log("route.params: ", route.params.filteredData);
@@ -79,7 +76,6 @@ const SearchResult = ({ route, navigation }) => {
                 foodItem: item,
               })
             }
-            // background={TouchableNativeFeedback.Ripple("#FFFFFF", true)}
           >
             <View>
               <Text
@@ -123,15 +119,8 @@ const SearchResult = ({ route, navigation }) => {
       </Text>
       <FlatList
         data={route.params.filteredData}
-        // horizontal
         numColumns={2}
         key={"*"}
-        // contentContainerStyle={{
-        //   flexDirection: "row",
-        //   flexWrap: "wrap",
-        // }}
-        // contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
-        // scrollEnabled="false"
         renderItem={renderSearchedItem}
         keyExtractor={(item, index) => index.toString()}
       />

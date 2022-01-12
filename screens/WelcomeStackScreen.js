@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import { View, Button } from "react-native";
-// import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
+import { View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import DrawerMenu from "../components/Views/hamburger";
 import IconButton from "../components/Views/IconButton";
-// import MenuComponent from "../components/Dishes";
 import FoodDetailComponent from "../components/FoodDetail";
 import HomeComponent from "../components/HomeComponent";
 import SearchResultComponent from "../components/SearchResult";
@@ -26,7 +24,6 @@ const MainStackNavigator = () => {
         name="Food List"
         component={HomeComponent}
         options={({ route }) => ({
-          // headerShown: false,
           tabBarActiveTintColor: "green",
           tabBarInactiveTintColor: "grey",
 
@@ -58,18 +55,10 @@ const MainStackNavigator = () => {
           title: "",
           headerLeft: () => <DrawerMenu />,
         })}
-        // options={{
-        //   headerShown: false,
-
-        // }}
       />
       <Stack.Screen
         name="Food Detail"
         component={FoodDetailComponent}
-        // options={({ route }) => ({
-        //   title: route.params.name,
-        //   headerLeft: () => <Button title="Go Back"></Button>,
-        // })}
         options={{
           headerShown: false,
         }}
@@ -77,10 +66,6 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="Search Result"
         component={SearchResultComponent}
-        // options={({ route }) => ({
-        //   title: route.params.name,
-        //   headerLeft: () => <Button title="Go Back"></Button>,
-        // })}
         options={{
           headerShown: false,
         }}

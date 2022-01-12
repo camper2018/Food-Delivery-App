@@ -14,6 +14,7 @@ import AuthScreen from "../screens/AuthScreen";
 import Logout from "../components/Logout";
 import { DishesContextProvider } from "../HomeScreenContext";
 import ProfileScreen from "../screens/ProfileScreen";
+import OrdersScreen from "../screens/OrdersScreen";
 const auth = Firebase.auth();
 
 const CustomDrawerComponent = (props) => {
@@ -73,6 +74,22 @@ const MainDrawerScreen = (props) => {
               color={props.color}
             />
           ),
+          // unmountOnBlur: true,
+        }}
+      />
+      <MainNavigator.Screen
+        name="My Orders"
+        component={OrdersScreen}
+        options={{
+          drawerIcon: (props) => (
+            <Icon
+              name="list-alt"
+              type="font-awesome"
+              size={22}
+              color={props.color}
+            />
+          ),
+          // unmountOnBlur: true,
         }}
       />
     </MainNavigator.Navigator>

@@ -1,10 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
-  StyleSheet,
   View,
-  ScrollView,
-  FlatList,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
@@ -71,7 +68,6 @@ const Dish = (props) => {
           foodItem: selectedItem,
         })
       }
-      // background={TouchableNativeFeedback.Ripple("#FFFFFF", true)}
     >
       <View>
         <Card

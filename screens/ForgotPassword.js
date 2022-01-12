@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import ErrorMessage from "../components/ErrorMessage";
 import Firebase from "../config/firebase";
 const auth = Firebase.auth();
+
 const ForgotPassword = (props) => {
   const [email, setEmail] = useState("");
   const [resetError, setResetError] = useState("");
@@ -36,6 +37,11 @@ const ForgotPassword = (props) => {
         title="Send Email"
         buttonStyle={styles.formButton}
       />
+      <Button
+        onPress={() => props.handlePasswordReset()}
+        title="Cancel"
+        buttonStyle={{ ...styles.formButton, backgroundColor: "grey" }}
+      />
     </View>
   );
 };
@@ -59,7 +65,6 @@ const styles = StyleSheet.create({
   formButton: {
     backgroundColor: "brown",
     width: "90%",
-    borderRadius: 100,
     margin: "5%",
     padding: 10,
   },

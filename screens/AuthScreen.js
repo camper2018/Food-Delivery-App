@@ -17,6 +17,7 @@ const AuthTabScreen = (props) => {
         name="Login"
         options={{
           title: "Login",
+          // unmountOnBlur: true,
         }}
         children={() => (
           <Login {...props} handlePasswordReset={props.handlePasswordReset} />
@@ -27,6 +28,7 @@ const AuthTabScreen = (props) => {
         component={Signup}
         options={{
           title: "Sign-up",
+          // unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>
@@ -44,13 +46,22 @@ const AuthScreen = (props) => {
             source={require("./../assets/chef-head-symbol.jpeg")}
             style={styles.image}
           />
-          <AuthTabScreen {...props} handlePasswordReset={handlePasswordReset} />
+          <AuthTabScreen
+            options={{
+              unmountOnBlur: true,
+            }}
+            {...props}
+            handlePasswordReset={handlePasswordReset}
+          />
         </Card>
       )}
 
       {passwordReset && (
         <Card style={styles.card}>
-          <ForgotPassword handlePasswordReset={handlePasswordReset} />
+          <ForgotPassword
+            options={{ unmountOnBlur: true }}
+            handlePasswordReset={handlePasswordReset}
+          />
         </Card>
       )}
     </NavigationContainer>

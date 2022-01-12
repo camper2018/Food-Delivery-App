@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-} from "react-native";
-import {
-  MaterialCommunityIcons,
-  FontAwesome,
-  FontAwesome5,
-  Feather,
-} from "@expo/vector-icons";
+import { Text, View, SafeAreaView, ImageBackground } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Firebase from "../config/firebase";
-import ProfilePic from "../assets/profile-image.png";
+// import ProfilePic from "../assets/profile-image.png";
 import Card from "./Views/Card";
 import { formatPhone } from "../utils/formatPhone";
 const auth = Firebase.auth();
 const Profile = () => {
-  // const [imageUrl, setImageUrl] = useState(ProfilePic);
   const [imageUrl, setImageUrl] = useState(
     "https://trishuliriversideresort.com/wp-content/uploads/2020/01/no-profile-picture.jpg"
   );
@@ -30,6 +16,10 @@ const Profile = () => {
   const [address, setAddress] = useState({});
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
+  const handleImageError = (e) => {
+    setError(e.nativeEvent.error);
+  };
 
   useEffect(() => {
     // Fetch profile name,nickname, email, address, image, phone number here.
@@ -37,13 +27,19 @@ const Profile = () => {
     if (users) {
       users.on("value", (snapshot) => {
         const data = snapshot.val();
-        setImageUrl(data.profile_picture);
-        setUsername(data.displayName);
-        setFirstname(data.firstname);
-        setLastname(data.lastname);
-        setEmail(data.email);
-        setPhone(formatPhone(data.phone));
-        setAddress(data.address);
+        if (data) {
+          setImageUrl(
+            data.profile_picture && !error
+              ? data.profile_picture
+              : "https://trishuliriversideresort.com/wp-content/uploads/2020/01/no-profile-picture.jpg"
+          );
+          setUsername(data.displayName);
+          setFirstname(data.firstname);
+          setLastname(data.lastname);
+          setEmail(data.email);
+          setPhone(formatPhone(data.phone));
+          setAddress(data.address);
+        }
       });
     }
   }, []);
@@ -51,12 +47,12 @@ const Profile = () => {
     <SafeAreaView>
       <View
         style={{
+          // flex: 1,
           alignItems: "center",
-
-          justifyContent: "center",
+          // justifyContent: "center",
         }}
       >
-        <Card
+        {/* <Card
           style={{
             borderRadius: 25,
             width: "80%",
@@ -66,24 +62,53 @@ const Profile = () => {
             alignItems: "center",
             justifyContent: "center",
           }}
+        > */}
+        <View
+          style={{
+            // marginBottom: 50,
+            // justifyContent: "center",
+            alignItems: "center",
+            // marginTop: 50,
+            marginVertical: "10%",
+          }}
         >
+          <ImageBackground
+            source={{ uri: imageUrl }}
+            style={{ height: 160, width: 160 }}
+            imageStyle={{ borderRadius: 100 }}
+            onError={handleImageError}
+          />
+        </View>
+        {/* <Card style={{ padding: "10%", marginBottom: "10%" }}> */}
+        <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+          {firstname} {lastname}
+        </Text>
+        <View>
           <View
             style={{
-              marginBottom: 40,
-              justifyContent: "center",
-              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              padding: 10,
             }}
           >
-            <ImageBackground
-              source={{ uri: imageUrl }}
-              style={{ height: 200, width: 200 }}
-              imageStyle={{ borderRadius: 100 }}
-            />
+            {email ? <FontAwesome5 name="envelope" size={24} /> : null}
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}>
+              {email}
+            </Text>
           </View>
-          <Text style={{ fontWeight: "bold", fontSize: 25 }}>
-            {firstname} {lastname}
-          </Text>
-          <View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              padding: 10,
+            }}
+          >
+            {phone ? <FontAwesome5 name="phone" size={24} /> : null}
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}>
+              {phone}
+            </Text>
+          </View>
+          {address.street ? (
             <View
               style={{
                 flexDirection: "row",
@@ -91,40 +116,23 @@ const Profile = () => {
                 padding: 10,
               }}
             >
-              <FontAwesome5 name="envelope" size={20} />
-              <Text style={{ fontWeight: "bold", marginLeft: 10 }}>
-                {email}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                padding: 10,
-              }}
-            >
-              <FontAwesome5 name="phone" size={20} />
-              <Text style={{ fontWeight: "bold", marginLeft: 10 }}>
-                {phone}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                padding: 10,
-              }}
-            >
-              <FontAwesome5 name="map-marker-alt" size={20} />
-              <Text style={{ fontWeight: "bold", marginLeft: 10 }}>
+              <FontAwesome5 name="map-marker-alt" size={24} />
+
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}
+              >
                 {address.street}
               </Text>
             </View>
-            <Text style={{ fontWeight: "bold", marginLeft: 35 }}>
+          ) : null}
+          {address.city && address.state ? (
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 39 }}>
               {address.city} {address.state}, {address.zipCode}
             </Text>
-          </View>
-        </Card>
+          ) : null}
+        </View>
+        {/* </Card> */}
+        {/* </Card> */}
       </View>
     </SafeAreaView>
   );

@@ -61,7 +61,7 @@ const Order = ({ route, navigation }) => {
             <Button
               buttonStyle={{
                 alignSelf: "center",
-                width: 200,
+                width: 130,
                 paddingTop: 0,
               }}
               type="clear"

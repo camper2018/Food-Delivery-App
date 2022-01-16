@@ -68,7 +68,7 @@ const MyOrders = ({ navigation, route }) => {
             <Text
               style={{ marginBottom: 10, fontWeight: "bold", color: "tomato" }}
             >
-              Your Order
+              Order# : {item.id}
             </Text>
             <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
               {item.date.split(" ").slice(0, 4).join(" ")}

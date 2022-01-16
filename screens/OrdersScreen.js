@@ -11,7 +11,7 @@ const OrdersScreen = () => {
         name="Orders Screen"
         component={MyOrders}
         options={({ navigation, route }) => ({
-          title: "Orders Screen",
+          title: "My Orders",
           headerTintColor: "white",
           headerTitleAlign: "center",
           headerTintColor: "white",

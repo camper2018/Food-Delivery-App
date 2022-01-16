@@ -47,28 +47,13 @@ const Profile = () => {
     <SafeAreaView>
       <View
         style={{
-          // flex: 1,
           alignItems: "center",
-          // justifyContent: "center",
         }}
       >
-        {/* <Card
-          style={{
-            borderRadius: 25,
-            width: "80%",
-            padding: 35,
-            margin: 20,
-            marginTop: 35,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        > */}
         <View
           style={{
-            // marginBottom: 50,
-            // justifyContent: "center",
             alignItems: "center",
-            // marginTop: 50,
+
             marginVertical: "10%",
           }}
         >
@@ -79,7 +64,7 @@ const Profile = () => {
             onError={handleImageError}
           />
         </View>
-        {/* <Card style={{ padding: "10%", marginBottom: "10%" }}> */}
+
         <Text style={{ fontWeight: "bold", fontSize: 25 }}>
           {firstname} {lastname}
         </Text>
@@ -131,8 +116,6 @@ const Profile = () => {
             </Text>
           ) : null}
         </View>
-        {/* </Card> */}
-        {/* </Card> */}
       </View>
     </SafeAreaView>
   );

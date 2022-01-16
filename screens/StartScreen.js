@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     backgroundColor: "green",
     paddingVertical: 20,
-    marginTop: 30,
+    marginTop: 40,
   },
 });
 export default StartScreen;

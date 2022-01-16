@@ -35,7 +35,7 @@ const ProfileScreen = ({ navigation, route }) => {
               }}
             />
           ),
-          // unmountOnBlur: true,
+          unmountOnBlur: true,
         })}
       />
       <Stack.Screen

@@ -1,43 +1,46 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import { View, StyleSheet, Button, Text, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import { DishesContext } from "../../HomeScreenContext";
 
 const PlusMinusButton = (props) => {
   const [count, setCount] = useState(props.item.amount);
   const { cartItems, setCartItems } = useContext(DishesContext);
-
   const handleIncreaseCount = () => {
-    setCount((count) => Number(count) + 1);
+    if (count >= 99) {
+      Alert.alert(
+        "Maximum online-order limit exceeded!. For placing an order amount greater than 99, please contact us."
+      );
+    } else {
+      setCount((count) => Number(count) + 1);
 
+      const updatedItem = {
+        ...props.item,
+        amount: Number(count) + 1,
+      };
+
+      const updatedItems = [...cartItems];
+      updatedItems[props.index] = updatedItem;
+      setCartItems(updatedItems);
+    }
+  };
+
+  const handleDecreaseCount = () => {
+    setCount((count) => (Number(count) > 1 ? Number(count) - 1 : 1));
     const updatedItem = {
       ...props.item,
-      amount: Number(count) + 1,
+      amount: Number(count) > 1 ? Number(count) - 1 : 1,
     };
-
     const updatedItems = [...cartItems];
     updatedItems[props.index] = updatedItem;
     setCartItems(updatedItems);
   };
 
-  const handleDecreaseCount = () => {
-    setCount((count) => (Number(count) > 1 ? Number(count) - 1 : 0));
-    const updatedItem = {
-      ...props.item,
-      amount: Number(count) > 1 ? Number(count) - 1 : 0,
-    };
-    const filteredCartItems = cartItems.filter(
-      (item) => item.id !== props.item.id
-    );
-    setCartItems([...filteredCartItems, updatedItem]);
-  };
-
   const handleChangeText = (text) => {
     const updatedItem = {
       ...props.item,
-      amount: Number(text),
+      amount: Number(text) > 0 ? Number(text) : 1,
     };
-
     const updatedItems = [...cartItems];
     updatedItems[props.index] = updatedItem;
     setCartItems(updatedItems);
@@ -68,13 +71,14 @@ const PlusMinusButton = (props) => {
           color: "white",
           fontSize: 19,
           borderBottomColor: "white",
-          width: 25,
+          width: 30,
           marginLeft: 10,
           marginRight: 5,
         }}
         value={count.toString()}
         keyboardType="number-pad"
         onChangeText={handleChangeText}
+        maxLength={2}
       />
       <Icon name="plus" size={23} onPress={handleIncreaseCount} color="white" />
     </View>

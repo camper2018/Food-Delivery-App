@@ -29,8 +29,8 @@ const Checkout = ({ navigation, route }) => {
   const [lastname, setLastname] = useState("");
   const [address, setAddress] = useState({});
   const [phone, setPhone] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState();
-  const [deliveryMethod, setDeliveryMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [deliveryMethod, setDeliveryMethod] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [radioBtn, setRadioBtn] = useState({
@@ -39,8 +39,7 @@ const Checkout = ({ navigation, route }) => {
     doorDelivery: false,
     pickup: false,
   });
-  const { cartItems, setCartItems, orders, setOrders } =
-    useContext(DishesContext);
+  const { cartItems, setCartItems } = useContext(DishesContext);
   const [isModalVisible, setModalVisible] = useState(false);
   const { colors } = useTheme();
 
@@ -48,23 +47,28 @@ const Checkout = ({ navigation, route }) => {
     setModalVisible(!isModalVisible);
   };
   const handleCheckout = () => {
-    const order = {
-      userId: auth.currentUser.uid,
-      username: firstname + " " + lastname,
-      items: cartItems,
-      totalPrice,
-      paymentMethod,
-      deliveryMethod,
-      deliveryAddress: address,
-      paymentStatus: "in process",
-      deliveryStatus: "in process",
-    };
+    if (paymentMethod && deliveryMethod) {
+      const order = {
+        userId: auth.currentUser.uid,
+        username: firstname + " " + lastname,
+        items: cartItems,
+        totalPrice,
+        paymentMethod,
+        deliveryMethod,
+        deliveryAddress: address,
+        paymentStatus: "in process",
+        deliveryStatus: "in process",
+        date: Date().toLocaleString(),
+      };
 
-    Firebase.database().ref("orders").push(order);
-    Alert.alert("Action!, An order was was placed");
+      Firebase.database().ref("orders").push(order);
+      Alert.alert("Action!, An order was was placed");
 
-    setCartItems([]);
-    navigation.navigate("Welcome");
+      setCartItems([]);
+      navigation.navigate("Welcome");
+    } else {
+      Alert.alert("Please select Payment and Delivery method first!");
+    }
   };
   useEffect(() => {
     // Fetch profile name,nickname, email, address, image, phone number here.
@@ -85,7 +89,6 @@ const Checkout = ({ navigation, route }) => {
       0
     );
     setTotalPrice(total.toFixed(2));
-    console.log("total: ", total);
   };
   useEffect(() => {
     calculateTotalPrice();
@@ -94,7 +97,7 @@ const Checkout = ({ navigation, route }) => {
     <SafeAreaView>
       <Animatable.View animation="zoomInUp">
         <ScrollView>
-          <View style={{ marginTop: 10, marginLeft: 20 }}>
+          <View style={{ marginTop: 30, marginLeft: 20 }}>
             <Ionicons
               name="arrow-back"
               size={30}

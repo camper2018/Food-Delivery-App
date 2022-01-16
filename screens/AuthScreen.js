@@ -17,7 +17,7 @@ const AuthTabScreen = (props) => {
         name="Login"
         options={{
           title: "Login",
-          // unmountOnBlur: true,
+          unmountOnBlur: true,
         }}
         children={() => (
           <Login {...props} handlePasswordReset={props.handlePasswordReset} />
@@ -28,7 +28,7 @@ const AuthTabScreen = (props) => {
         component={Signup}
         options={{
           title: "Sign-up",
-          // unmountOnBlur: true,
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>

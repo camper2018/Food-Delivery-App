@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -7,7 +7,7 @@ import Favorites from "./FavoritesScreen";
 import DrawerMenu from "../components/Views/hamburger";
 import IconButton from "../components/Views/IconButton";
 import Firebase from "../config/firebase";
-import { AuthenticatedUserContext } from "../Navigation/AuthenticatedUserProvider";
+
 import WelcomeStackScreen from "./WelcomeStackScreen";
 import { DishesContext } from "../HomeScreenContext";
 
@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 const WelcomeScreen = (props) => {
   const { cartItems, setCartItems, setFavoriteDishes } =
     useContext(DishesContext);
-  const { user } = useContext(AuthenticatedUserContext);
+
   const handleSignOut = async () => {
     setFavoriteDishes([]);
     setCartItems([]);

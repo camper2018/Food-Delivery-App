@@ -7,11 +7,11 @@ import {
   FlatList,
   Alert,
   Text,
+  Animated,
 } from "react-native";
 import { ListItem, Avatar, Button } from "react-native-elements";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { DishesContext } from "../HomeScreenContext";
-import Card from "../components/Views/Card";
 import * as Aminatable from "react-native-animatable";
 import { Ionicons } from "@expo/vector-icons";
 import PlusMinusButton from "./Views/Plus-minusButton";
@@ -20,20 +20,28 @@ const ShoppingCart = ({ navigation, route }) => {
   const { favoriteDishes, setFavoriteDishes, cartItems, setCartItems } =
     useContext(DishesContext);
   const [myCart, setCart] = useState([]);
+  const refsArray = [];
+  const [favorites, setFavorites] = useState(favoriteDishes);
+
   const createFavoritesIcon = (item) => {
-    const favoriteFound = favoriteDishes.find((dish) => dish.id === item.id);
+    // find if item is in the favorites and render heart icon accordingly
+    const favoriteFound = favorites.find((dish) => dish.id === item.id);
     const iconName = favoriteFound ? "heart" : "heart-outline";
     return iconName;
   };
-  const [favoritesIcon, setFavoritesIcon] = useState(
-    createFavoritesIcon("heart-outline")
-  );
 
   useEffect(() => {
-    setCart(cartItems);
-  }, [cartItems]);
+    const unsubscribe = navigation.addListener("focus", () => {
+      setCart(cartItems);
+      setFavorites([...favoriteDishes]);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation, favoriteDishes, cartItems]);
 
   const deleteCartItem = (item) => {
+    refsArray[item.id].close();
     const updatedCartItems = cartItems.filter((itm) => itm.id !== item.id);
     setCartItems(updatedCartItems);
   };
@@ -47,7 +55,10 @@ const ShoppingCart = ({ navigation, route }) => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log(item.name + " Not Deleted"),
+          onPress: () => {
+            console.log(item.name + " Not Deleted");
+            refsArray[item.id].close();
+          },
           style: "cancel",
         },
         {
@@ -62,22 +73,22 @@ const ShoppingCart = ({ navigation, route }) => {
   };
 
   const renderCartItem = ({ item, index }) => {
-    const { navigate } = navigation;
-    const RightActions = ({ progress, dragX, onDelete, onAdd }) => {
+    const RightActions = ({ progress, dragX, onDelete, item }) => {
       const scale = dragX.interpolate({
-        inputRange: [-100, 30],
+        inputRange: [-100, 70],
         outputRange: [0.9, 0],
       });
 
       return (
         <>
-          <View
+          <Animated.View
             style={{
               backgroundColor: "transparent",
               justifyContent: "center",
               alignItems: "center",
               paddingHorizontal: 10,
               flexDirection: "row",
+              transform: [{ scale }],
             }}
           >
             <Icon
@@ -86,27 +97,22 @@ const ShoppingCart = ({ navigation, route }) => {
               type="ionicon"
               reverse
               onPress={(e) => {
-                if (favoritesIcon === "heart-outline") {
-                  let wasFound = favoriteDishes.some(
-                    (dish) => dish.id === item.id
-                  );
-                  if (!wasFound) {
-                    Alert.alert(`${item.name} added to your favorites!`);
-                    setFavoriteDishes([...favoriteDishes, item]);
-                    setFavoritesIcon("heart");
-                  } else {
-                    Alert.alert(`${item.name} is already in your favorites!`);
-                    setFavoritesIcon("heart");
-                    setFavoriteDishes([...favoriteDishes, item]);
-                  }
+                let icon = createFavoritesIcon(item);
+                if (icon === "heart-outline") {
+                  setFavoriteDishes([...favorites, item]);
+                  setFavorites([...favorites, item]);
+                  Alert.alert(`${item.name} added to your favorites!`);
                 } else {
-                  const updatedFavoriteDishes = favoriteDishes.filter(
+                  const updatedFavoriteDishes = favorites.filter(
                     (dish) => dish.id !== item.id
                   );
-                  Alert.alert(`${item.name} removed from your favorites!.`);
+
                   setFavoriteDishes(updatedFavoriteDishes);
-                  setFavoritesIcon("heart-outline");
+                  setFavorites(updatedFavoriteDishes);
+
+                  Alert.alert(`${item.name} removed from your favorites!.`);
                 }
+                refsArray[item.id].close();
               }}
             />
             <Icon
@@ -116,7 +122,7 @@ const ShoppingCart = ({ navigation, route }) => {
               reverse
               onPress={onDelete}
             />
-          </View>
+          </Animated.View>
         </>
       );
     };
@@ -130,12 +136,16 @@ const ShoppingCart = ({ navigation, route }) => {
           shadowOpacity: 0.26,
           elevation: 8,
         }}
+        ref={(ref) => {
+          refsArray[item.id] = ref;
+        }}
         renderRightActions={(progress, dragX) => {
           return (
             <RightActions
               progress={progress}
               dragX={dragX}
               onDelete={() => handleDelete(item)}
+              item={item}
             />
           );
         }}
@@ -144,7 +154,7 @@ const ShoppingCart = ({ navigation, route }) => {
         <Aminatable.View animation="fadeInRightBig" duration={2000}>
           <ListItem
             containerStyle={{ borderRadius: 28, margin: 15 }}
-            key={index}
+            key={item.id}
           >
             <Avatar
               title={item.name}
@@ -188,7 +198,6 @@ const ShoppingCart = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-      {/* <View style={{ marginTop: 10, marginLeft: 10 }}> */}
       <View
         style={{
           flexDirection: "row",
@@ -201,11 +210,11 @@ const ShoppingCart = ({ navigation, route }) => {
           size={30}
           color="black"
           onPress={navigation.goBack}
-          style={{ marginTop: 20, marginLeft: 20 }}
+          style={{ marginTop: 40, marginLeft: 20 }}
         />
         <Text
           style={{
-            marginTop: 20,
+            marginTop: 40,
             fontWeight: "bold",
             fontSize: 25,
             marginRight: "45%",

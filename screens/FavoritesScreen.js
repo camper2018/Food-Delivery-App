@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Icon } from "react-native-elements";
 import {
   SafeAreaView,
@@ -15,6 +15,8 @@ import * as Aminatable from "react-native-animatable";
 
 const Favorites = (props) => {
   const { favoriteDishes, setFavoriteDishes } = useContext(DishesContext);
+  const refsArray = [];
+
   const deleteFavorite = (item) => {
     const updatedFavorites = favoriteDishes.filter(
       (dish) => dish.id !== item.id
@@ -24,11 +26,14 @@ const Favorites = (props) => {
   const handleDelete = (item) => {
     Alert.alert(
       "Delete List?",
-      "Are you sure you wish to delete the list " + item.name + "?",
+      "Are you sure you wish to delete " + item.name + " from your favorites?",
       [
         {
           text: "Cancel",
-          onPress: () => console.log(item.name + " Not Deleted"),
+          onPress: () => {
+            console.log(item.name + " Not Deleted");
+            refsArray[item.id].close();
+          },
           style: "cancel",
         },
         {
@@ -44,30 +49,23 @@ const Favorites = (props) => {
   const renderMenuItem = ({ item, index }) => {
     const { navigate } = props.navigation;
     const RightActions = ({ progress, dragX, onDelete }) => {
-      const scale = dragX.interpolate({
-        inputRange: [-100, 30],
-        outputRange: [0.9, 0],
-      });
-
       return (
-        <>
-          <View
-            style={{
-              backgroundColor: "white",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: 10,
-            }}
-          >
-            <Icon
-              name="trash"
-              color="red"
-              type="ionicon"
-              reverse
-              onPress={onDelete}
-            />
-          </View>
-        </>
+        <View
+          style={{
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 10,
+          }}
+        >
+          <Icon
+            name="trash"
+            color="red"
+            type="ionicon"
+            reverse
+            onPress={onDelete}
+          />
+        </View>
       );
     };
 
@@ -98,9 +96,12 @@ const Favorites = (props) => {
               );
             }}
             autoClose={true}
+            ref={(ref) => {
+              refsArray[item.id] = ref;
+            }}
           >
             <ListItem
-              key={index}
+              key={item.id}
               style={{
                 justifyContent: "center",
               }}
@@ -140,9 +141,13 @@ const Favorites = (props) => {
             fontWeight: "bold",
             padding: 20,
             color: "tomato",
+            marginTop: 20,
           }}
         >
           My Favorites
+        </Text>
+        <Text style={{ alignSelf: "center", marginVertical: 10 }}>
+          swipe 👈 on an item to delete
         </Text>
         <FlatList
           data={favoriteDishes}

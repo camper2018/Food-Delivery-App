@@ -11,6 +11,7 @@ const firebaseConfig = {
   storageBucket: Constants.manifest.extra.storageBucket,
   messagingSenderId: Constants.manifest.extra.messagingSenderId,
   appId: Constants.manifest.extra.appId,
+  databaseURL: Constants.manifest.extra.databaseURL,
 };
 
 let Firebase;

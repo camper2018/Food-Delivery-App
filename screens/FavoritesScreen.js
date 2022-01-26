@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Icon } from "react-native-elements";
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   FlatList,
   Alert,
   Text,
+  SafeAreaView,
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -158,7 +158,7 @@ const Favorites = (props) => {
     );
   } else {
     return (
-      <SafeAreaView
+      <View
         style={{
           flex: 1,
           justifyContent: "center",
@@ -166,7 +166,7 @@ const Favorites = (props) => {
         }}
       >
         <Text style={{ fontSize: 20 }}>You have no favorites yet!</Text>
-      </SafeAreaView>
+      </View>
     );
   }
 };
